@@ -1,0 +1,14 @@
+{
+  "name": "Dynamic Tabs",
+  "description": "Dynamic tabs",
+  "version": "0.1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.mjs",
+    "type": "module"
+  },
+  "permissions": ["storage", "tabs", "tabGroups"]
+}
