@@ -16,6 +16,7 @@ export default class App extends LitElement {
 
   constructor() {
     super();
+    page.base("/browser")
     this.createRoute("/", Home);
     page.start();
   }
@@ -28,7 +29,7 @@ export default class App extends LitElement {
    * @param {string?} title the title to display in the URL bar
    * @returns {void}
    */
-  createRoute(pattern, component, title = "%project-name%") {
+  createRoute(pattern, component, title = "Dynamic Tabs Browser") {
     page(pattern, (context) => {
       this.currentPage = new component(context);
     });

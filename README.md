@@ -5,7 +5,7 @@ A zero-dependency, zero-build starter repository for lit-element
 ## Setup
 There are two keyed strings that you will need to find and replace in order to get started. 
 
-`%project-name%` makes the name of your project appear in the package.json, web app manifest, Firebase configuration files, document.title, and boilerplate header
+`Dynamic Tabs Browser` makes the name of your project appear in the package.json, web app manifest, Firebase configuration files, document.title, and boilerplate header
 
 `%firebase-config%` needs to be replaced firebase-app.mjs in order to use Firebase
 

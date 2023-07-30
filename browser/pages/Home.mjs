@@ -11,7 +11,7 @@ export default class Home extends LitElement {
   }
 
   render() {
-    return html`<header><h1>%project-name%</h1></header>
+    return html`<header><h1>Dynamic Tabs Browser</h1></header>
       <main>Welcome to my app!</main>`;
   }
 
