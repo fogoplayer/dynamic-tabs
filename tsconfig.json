@@ -9,6 +9,6 @@
     "noEmit": true,
     "strict": true
   },
-  "include": ["src/**/*.js", "src/**/*.mjs", "src/**/*.d.ts"],
+  "include": ["**/*.js", "**/*.mjs", "**/*.d.ts"],
   "exclude": ["node_modules"]
 }
