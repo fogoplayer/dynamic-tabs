@@ -1,5 +1,6 @@
 import { component, virtual, html } from "../libs/haunted@4.8.3.js";
 import globalCss from "../global-styles/global.css.mjs";
+import defineHaunted from "../services/haunted-define.mjs";
 
 // export default class Home extends LitElement {
 //   static get properties() {
@@ -23,5 +24,4 @@ function Home() {
     <main>Welcome to my app!</main>`;
 }
 
-export default virtual(Home);
-customElements.define("home-", component(Home));
+export default defineHaunted("home-", Home);

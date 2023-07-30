@@ -1,8 +1,8 @@
-import { RenderFunction } from "haunted";
-import { ComponentConstructor } from "haunted/lib/component";
+import { GenericRenderer } from "haunted";
+import { Component } from "haunted/lib/component";
 
 export * from "haunted";
-// // @ts-ignore
-// import { virtual } from "haunted";
-// type TypedVirtual = (renderer: RenderFunction) => Element;
-// export const virtual: TypedVirtual;
+export interface Renderer<P extends object> extends GenericRenderer<HTMLElement, P> {
+  (this: Component<P>, host: Component<P>): unknown | void;
+  observedAttributes?: (keyof P)[];
+}

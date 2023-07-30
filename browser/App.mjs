@@ -29,14 +29,13 @@ export default class App extends LitElement {
    * Creates a route for the given pattern and associates it with a custom web component.
    *
    * @param {string} pattern the URL pattern to match for the route.
-   * @param {unknown} element the component class to be instantiated when the route is activated.
+   * @param {string} tag the tag of the component being created
    * @param {string?} title the title to display in the URL bar
    * @returns {void}
    */
-  createRoute(pattern, element, title = "Dynamic Tabs Browser") {
+  createRoute(pattern, tag, title = "Dynamic Tabs Browser") {
     page(pattern, context => {
-      // @ts-ignore
-      this.currentPage = document.createElement("home-");
+      this.currentPage = document.createElement(tag);
     });
   }
 
