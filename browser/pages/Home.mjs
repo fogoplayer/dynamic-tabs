@@ -8,19 +8,17 @@ function Home() {
 
   return html`
     <div class="layer">
-      <nav class="left">Nav</nav>
+      <nav class="top">Nav</nav>
       <div class="layer">
-        <section class="right">section</section>
+        <section class="left">section</section>
         <div class="layer">
-          <div class="top">
-            div
-            <div class="layer">
-              <footer class="bottom">Footer</footer>
-              <main>
-                Main content
-                <iframe src="" frameborder="0"></iframe>
-              </main>
-            </div>
+          <div class="top">div</div>
+          <div class="layer">
+            <footer class="bottom">Footer</footer>
+            <main>
+              Main content
+              <iframe src="" frameborder="0"></iframe>
+            </main>
           </div>
         </div>
       </div>
@@ -33,6 +31,11 @@ function Home() {
 
       .layer > * {
         outline: 1px solid red;
+        flex: 1;
+      }
+
+      .layer > :first-child {
+        flex: 0;
       }
 
       .layer:has(> .left) {
