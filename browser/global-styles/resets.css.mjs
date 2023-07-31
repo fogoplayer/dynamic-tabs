@@ -1,7 +1,7 @@
 import { css } from "../libs/lit-all@2.7.6.js";
 
 export default css`
-  :where(*) {
+  :where(:not(ion-*)) {
     box-sizing: border-box;
     margin: 0;
     background-color: inherit;

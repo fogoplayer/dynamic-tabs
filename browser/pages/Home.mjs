@@ -82,7 +82,7 @@ export default class Home extends LitElement {
         flex-direction: column;
       }
 
-      .layer :has(> .bottom) {
+      .layer:has(> .bottom) {
         flex-direction: column-reverse;
       }
 
