@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
 import userSettings from "../services/user-settings.mjs";
-// import TabsWidget from "../components/TabsWidget.mjs";
+import TabsWidget from "../components/TabsWidget.mjs";
 
 export default class Home extends LitElement {
   render() {
@@ -13,7 +13,7 @@ export default class Home extends LitElement {
           <div class="${userSettings.panels[2].position}">div</div>
           <div class="layer">
             <footer class="${userSettings.panels[3].position}">Footer</footer>
-            <tabs-widget>
+            <tabs-widget position="left">
               <main>
                 Main content
                 <!-- <iframe src="" frameborder="0"></iframe> -->
