@@ -1,5 +1,7 @@
 import "./libs/pwaupdate.js";
 import { css, LitElement } from "./libs/lit-all@2.7.6.js";
+import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
+import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
 
 import Home from "./pages/Home.mjs";
@@ -16,7 +18,7 @@ export default class App extends LitElement {
 
   constructor() {
     super();
-    page.base("/browser")
+    page.base("/browser");
     this.createRoute("/", Home);
     page.start();
   }
@@ -30,7 +32,7 @@ export default class App extends LitElement {
    * @returns {void}
    */
   createRoute(pattern, component, title = "Dynamic Tabs Browser") {
-    page(pattern, (context) => {
+    page(pattern, context => {
       this.currentPage = new component(context);
     });
   }

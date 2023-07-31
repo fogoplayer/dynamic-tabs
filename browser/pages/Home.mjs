@@ -1,8 +1,7 @@
 import { LitElement, html, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
-import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
-import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import userSettings from "../services/user-settings.mjs";
+// import TabsWidget from "../components/TabsWidget.mjs";
 
 export default class Home extends LitElement {
   render() {
@@ -14,31 +13,33 @@ export default class Home extends LitElement {
           <div class="${userSettings.panels[2].position}">div</div>
           <div class="layer">
             <footer class="${userSettings.panels[3].position}">Footer</footer>
-            <main>
-              Main content
-              <!-- <iframe src="" frameborder="0"></iframe> -->
-              <ion-list>
-                ${userSettings.panels.map(
-                  (panel, i) =>
-                    html`<ion-item>
-                      <ion-select
-                        label="${panel.element}"
-                        label-placement="fixed"
-                        interface="popover"
-                        value="${panel.position}"
-                        @ionChange=${async e => {
-                          console.log(e);
-                          userSettings.panels[i].position = e.detail.value;
-                          await this.requestUpdate();
-                          console.log(userSettings);
-                        }}
-                      >
-                        ${this.dropdownOptions()}
-                      </ion-select>
-                    </ion-item>`
-                )}
-              </ion-list>
-            </main>
+            <tabs-widget>
+              <main>
+                Main content
+                <!-- <iframe src="" frameborder="0"></iframe> -->
+                <ion-list>
+                  ${userSettings.panels.map(
+                    (panel, i) =>
+                      html`<ion-item>
+                        <ion-select
+                          label="${panel.element}"
+                          label-placement="fixed"
+                          interface="popover"
+                          value="${panel.position}"
+                          @ionChange=${async e => {
+                            console.log(e);
+                            userSettings.panels[i].position = e.detail.value;
+                            await this.requestUpdate();
+                            console.log(userSettings);
+                          }}
+                        >
+                          ${this.dropdownOptions()}
+                        </ion-select>
+                      </ion-item>`
+                  )}
+                </ion-list>
+              </main>
+            </tabs-widget>
           </div>
         </div>
       </div>
