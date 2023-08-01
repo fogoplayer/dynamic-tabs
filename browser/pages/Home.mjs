@@ -7,6 +7,8 @@ import { getUserSettings } from "../services/user-settings.mjs";
 // import "../components/IframesWidget.mjs";
 // import "../components/Webview.mjs";
 import WebView from "../components/Webview.mjs";
+import TabsWidget from "../components/TabsWidget.mjs";
+import WidgetLayer from "../components/WidgetLayer.mjs";
 
 export default class Home extends LitElement {
   static properties = {
@@ -21,20 +23,24 @@ export default class Home extends LitElement {
   render() {
     // Render layers dynamically in order
     const [{ element: topLayer, position }, ...others] = this.widgets;
-    let renderRoot = new topLayer(position);
+    let renderRoot = new topLayer();
+    renderRoot.position = position;
 
     // collapse array into a bunch of nested layer elements
     const currentElement = others.reduce(
       /**
        *
-       * @param {UserSettings["widgets"][number]} prevLayer
+       * @param {UserSettings["widgets"][number]["element"]} prevLayer
        * @param {UserSettings["widgets"][number]} currLayer
        * @returns
        */
       (prevLayer, currLayer) => {
         const { element, position } = currLayer;
-        prevLayer.innerHTML += new element(position).outerHTML;
-        return /** @type {HTMLElement} */ (prevLayer.lastElementChild);
+        console.log("Passing in", position, "to", new element(position).tagName);
+        prevLayer.innerHTML += new element().outerHTML;
+        /** @type {WidgetLayer} */
+        (prevLayer.lastElementChild).position = position;
+        return prevLayer.lastElementChild;
       },
       renderRoot
     );

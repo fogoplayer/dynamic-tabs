@@ -6,13 +6,10 @@ export default class WidgetLayer extends LitElement {
     position: { type: String, reflect: true },
   };
 
-  /**
-   * @param {WidgetLayer["position"]} position
-   */
-  constructor(position = "left") {
+  constructor() {
     super();
     /** @type {"top" | "bottom" | "left" | "right" | "none"} */
-    this.position = position;
+    this.position;
   }
 
   /** @param {UpdatedDiff} diff */
