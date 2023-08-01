@@ -51,7 +51,14 @@ export default class Home extends LitElement {
     return renderRoot;
   }
 
-  static styles = [globalCss, css``];
+  static styles = [
+    globalCss,
+    css`
+      :host > * {
+        height: var(--100dvh);
+      }
+    `,
+  ];
 }
 
 customElements.define("home-", Home);
