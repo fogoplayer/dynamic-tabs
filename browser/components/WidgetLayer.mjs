@@ -1,6 +1,7 @@
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, css, html } from "../libs/lit-all@2.7.6.js";
 
+/** @abstract */
 export default class WidgetLayer extends LitElement {
   static properties = {
     position: { type: String, reflect: true },
@@ -26,6 +27,8 @@ export default class WidgetLayer extends LitElement {
       <slot></slot>
     `;
   }
+
+  static label = "This widget has not been labeled";
 
   /**
    * The widget to be displayed alongside the slotted content.

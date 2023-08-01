@@ -21,7 +21,7 @@ export default class WebView extends LitElement {
             (panel, i) =>
               html`<ion-item>
                 <ion-select
-                  label="${panel.element}"
+                  label="${panel.element.label}"
                   label-placement="fixed"
                   interface="popover"
                   value="${panel.position}"
