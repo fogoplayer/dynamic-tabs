@@ -1,9 +1,13 @@
 import IframesWidget from "../components/IframesWidget.mjs";
 import SessionsWidget from "../components/SessionsWidget.mjs";
 import TabsWidget from "../components/TabsWidget.mjs";
+import WidgetLayer from "../components/WidgetLayer.mjs";
 import { LitElement } from "../libs/lit-all@2.7.6.js";
 
-export default {
+/**
+ * @typedef {typeof settings} UserSettings
+ */
+const settings = {
   /** @type {{element: LitElement, position: "top" | "bottom" | "left" | "right"}[]} */
   widgets: [
     {
@@ -14,3 +18,5 @@ export default {
     { element: TabsWidget, position: "top" },
   ],
 };
+
+export default settings;
