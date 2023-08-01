@@ -7,9 +7,7 @@ export default class WidgetLayer extends LitElement {
   };
 
   /**
-   * @param {{
-   *  position: WidgetLayer["position"]
-   * }} props
+   * @param {WidgetLayer["position"]} position
    */
   constructor(position = "left") {
     super();
@@ -17,52 +15,60 @@ export default class WidgetLayer extends LitElement {
     this.position = position;
   }
 
+  /** @param {UpdatedDiff} diff */
+  updated(diff) {
+    if (diff.has("position")) {
+      this.classList.remove("top", "bottom", "left", "right", "none");
+      this.classList.add(this.position);
+    }
+  }
+
   render() {
-    return html`<div class="layer">
+    return html`
       ${this.widget()}
       <slot></slot>
-    </div>`;
+    `;
   }
 
   /**
+   * The widget to be displayed alongside the slotted content.
    * @type {()=> ReturnType<html>} widget
    * @abstract
    */
   widget() {
-    console.error("Guess there wasn't an override");
-    throw new Error("Subclass must implement widget");
+    throw new Error("WidgetLayer is an abstract class that must be extended to be implemented");
   }
 
   static styles = [
     globalCss,
     css`
-      .layer {
+      :host {
         display: flex;
         flex-wrap: nowrap;
       }
 
-      .layer ::slotted(*) {
+      :host ::slotted(*) {
         outline: 1px solid red;
         flex: 1;
       }
 
-      .layer > :first-child {
+      :host > :first-child {
         flex: 0;
       }
 
-      .layer:has(> .left) {
+      :host(.left) {
         flex-direction: row;
       }
 
-      .layer:has(> .right) {
+      :host(.right) {
         flex-direction: row-reverse;
       }
 
-      .layer:has(> .top) {
+      :host(.top) {
         flex-direction: column;
       }
 
-      .layer:has(> .bottom) {
+      :host(.bottom) {
         flex-direction: column-reverse;
       }
 
