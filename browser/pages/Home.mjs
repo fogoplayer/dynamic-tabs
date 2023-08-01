@@ -1,72 +1,42 @@
-import { LitElement, html, css } from "../libs/lit-all@2.7.6.js";
+import { LitElement, html, css, render } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
 import userSettings from "../services/user-settings.mjs";
-import "../components/TabsWidget.mjs";
-import "../components/SessionsWidget.mjs";
-import "../components/IframesWidget.mjs";
-import "../components/Webview.mjs";
+// import "../components/TabsWidget.mjs";
+// import "../components/SessionsWidget.mjs";
+// import "../components/IframesWidget.mjs";
+// import "../components/Webview.mjs";
+import WebView from "../components/Webview.mjs";
 
 export default class Home extends LitElement {
   render() {
     return html`
-      <iframes-widget position="right">
+      ${this.wrappedLayers(new WebView())}
+      <!-- <iframes-widget position="right">
         <sessions-widget position="right">
           <tabs-widget position="top">
             <web-view></web-view>
           </tabs-widget>
         </sessions-widget>
-      </iframes-widget>
+      </iframes-widget> -->
     `;
   }
 
-  // wrappedLayers() {
-  //   /** @type {LitElement | undefined} */
-  //   let wrappedLayers;
-  //   for (let i = userSettings.widgets.length; i > 0; i--) {
-  //     const { element } = userSettings.widgets[i - 1];
-  //     /** @type {LitElement} */
-  //     const Element = new element();
-  //     Element.appendChild(wrappedLayers); // html`${wrappedLayers}`;
-  //     debugger;
-  //     wrappedLayers = Element;
-  //   }
-  //   return wrappedLayers;
-  // }
+  wrappedLayers(child) {
+    const [{ element: topLayer }, ...others] = userSettings.widgets;
+    let renderRoot = new topLayer();
 
-  static styles = [
-    globalCss,
-    css`
-      .layer {
-        display: flex;
-        flex-wrap: nowrap;
-      }
+    let currentElement = renderRoot;
+    for (const { element } of others) {
+      currentElement.innerHTML += new element().outerHTML;
+      currentElement = /** @type {HTMLElement} */ (currentElement.lastElementChild);
+    }
 
-      .layer > :first-child {
-        flex: 0;
-      }
+    currentElement.innerHTML += child.outerHTML;
 
-      .layer:has(> .left) {
-        flex-direction: row;
-      }
+    return renderRoot;
+  }
 
-      .layer:has(> .right) {
-        flex-direction: row-reverse;
-      }
-
-      .layer:has(> .top) {
-        flex-direction: column;
-      }
-
-      .layer:has(> .bottom) {
-        flex-direction: column-reverse;
-      }
-
-      ion-list {
-        max-width: var(--limited-width);
-        margin-block: auto;
-      }
-    `,
-  ];
+  static styles = [globalCss, css``];
 }
 
 customElements.define("home-", Home);
