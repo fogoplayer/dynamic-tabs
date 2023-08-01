@@ -1,14 +1,23 @@
 import { LitElement, html } from "../libs/lit-all@2.7.6.js";
-import userSettings from "../services/user-settings.mjs";
+import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
 
 export default class WebView extends LitElement {
+  static properties = {
+    widgets: { type: Object, state: true },
+  };
+
+  constructor() {
+    super();
+    getUserSettings(({ widgets }) => (this.widgets = widgets));
+  }
+
   render() {
     return html`
       <main>
         Main content
         <!-- <iframe src="" frameborder="0"></iframe> -->
         <ion-list>
-          ${userSettings.widgets.map(
+          ${this.widgets.map(
             (panel, i) =>
               html`<ion-item>
                 <ion-select
@@ -18,9 +27,8 @@ export default class WebView extends LitElement {
                   value="${panel.position}"
                   @ionChange=${async (e) => {
                     console.log(e);
-                    userSettings.widgets[i].position = e.detail.value;
-                    await this.requestUpdate();
-                    console.log(userSettings);
+                    this.widgets[i].position = e.detail.value;
+                    updateSetting("widgets", [...this.widgets]);
                   }}
                 >
                   ${this.dropdownOptions()}
