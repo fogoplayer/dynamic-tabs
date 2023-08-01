@@ -4,6 +4,7 @@ import userSettings from "../services/user-settings.mjs";
 import "../components/TabsWidget.mjs";
 import "../components/SessionsWidget.mjs";
 import "../components/IframesWidget.mjs";
+import "../components/Webview.mjs";
 
 export default class Home extends LitElement {
   render() {
@@ -11,31 +12,7 @@ export default class Home extends LitElement {
       <iframes-widget position="right">
         <sessions-widget position="right">
           <tabs-widget position="top">
-            <main>
-              Main content
-              <!-- <iframe src="" frameborder="0"></iframe> -->
-              <ion-list>
-                ${userSettings.widgets.map(
-                  (panel, i) =>
-                    html`<ion-item>
-                      <ion-select
-                        label="${panel.element}"
-                        label-placement="fixed"
-                        interface="popover"
-                        value="${panel.position}"
-                        @ionChange=${async (e) => {
-                          console.log(e);
-                          userSettings.widgets[i].position = e.detail.value;
-                          await this.requestUpdate();
-                          console.log(userSettings);
-                        }}
-                      >
-                        ${this.dropdownOptions()}
-                      </ion-select>
-                    </ion-item>`
-                )}
-              </ion-list>
-            </main>
+            <web-view></web-view>
           </tabs-widget>
         </sessions-widget>
       </iframes-widget>
@@ -55,14 +32,6 @@ export default class Home extends LitElement {
   //   }
   //   return wrappedLayers;
   // }
-
-  dropdownOptions() {
-    return html`<ion-select-option value="top">Top</ion-select-option>
-      <ion-select-option value="bottom">Bottom</ion-select-option>
-      <ion-select-option value="left">Left</ion-select-option>
-      <ion-select-option value="right">Right</ion-select-option>
-      <ion-select-option value="none">None</ion-select-option>`;
-  }
 
   static styles = [
     globalCss,
