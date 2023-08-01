@@ -3,51 +3,58 @@ import globalCss from "../global-styles/global.css.mjs";
 import userSettings from "../services/user-settings.mjs";
 import "../components/TabsWidget.mjs";
 import "../components/SessionsWidget.mjs";
+import "../components/IframesWidget.mjs";
 
 export default class Home extends LitElement {
   render() {
-    return html`<div class="layer">
-      <nav class="${userSettings.panels[0].position}">Nav</nav>
-      <div class="layer">
-        <section class="${userSettings.panels[1].position}">section</section>
-        <div class="layer">
-          <div class="${userSettings.panels[2].position}">div</div>
-          <div class="layer">
-            <footer class="${userSettings.panels[3].position}">Footer</footer>
-            <sessions-widget position="right">
-              <tabs-widget position="top">
-                <main>
-                  Main content
-                  <!-- <iframe src="" frameborder="0"></iframe> -->
-                  <ion-list>
-                    ${userSettings.panels.map(
-                      (panel, i) =>
-                        html`<ion-item>
-                          <ion-select
-                            label="${panel.element}"
-                            label-placement="fixed"
-                            interface="popover"
-                            value="${panel.position}"
-                            @ionChange=${async e => {
-                              console.log(e);
-                              userSettings.panels[i].position = e.detail.value;
-                              await this.requestUpdate();
-                              console.log(userSettings);
-                            }}
-                          >
-                            ${this.dropdownOptions()}
-                          </ion-select>
-                        </ion-item>`
-                    )}
-                  </ion-list>
-                </main>
-              </tabs-widget>
-            </sessions-widget>
-          </div>
-        </div>
-      </div>
-    </div>`;
+    return html`
+      <iframes-widget position="right">
+        <sessions-widget position="right">
+          <tabs-widget position="top">
+            <main>
+              Main content
+              <!-- <iframe src="" frameborder="0"></iframe> -->
+              <ion-list>
+                ${userSettings.widgets.map(
+                  (panel, i) =>
+                    html`<ion-item>
+                      <ion-select
+                        label="${panel.element}"
+                        label-placement="fixed"
+                        interface="popover"
+                        value="${panel.position}"
+                        @ionChange=${async (e) => {
+                          console.log(e);
+                          userSettings.widgets[i].position = e.detail.value;
+                          await this.requestUpdate();
+                          console.log(userSettings);
+                        }}
+                      >
+                        ${this.dropdownOptions()}
+                      </ion-select>
+                    </ion-item>`
+                )}
+              </ion-list>
+            </main>
+          </tabs-widget>
+        </sessions-widget>
+      </iframes-widget>
+    `;
   }
+
+  // wrappedLayers() {
+  //   /** @type {LitElement | undefined} */
+  //   let wrappedLayers;
+  //   for (let i = userSettings.widgets.length; i > 0; i--) {
+  //     const { element } = userSettings.widgets[i - 1];
+  //     /** @type {LitElement} */
+  //     const Element = new element();
+  //     Element.appendChild(wrappedLayers); // html`${wrappedLayers}`;
+  //     debugger;
+  //     wrappedLayers = Element;
+  //   }
+  //   return wrappedLayers;
+  // }
 
   dropdownOptions() {
     return html`<ion-select-option value="top">Top</ion-select-option>
@@ -63,11 +70,6 @@ export default class Home extends LitElement {
       .layer {
         display: flex;
         flex-wrap: nowrap;
-      }
-
-      .layer > * {
-        outline: 1px solid red;
-        flex: 1;
       }
 
       .layer > :first-child {
