@@ -12,11 +12,10 @@ import WidgetLayer from "../components/WidgetLayer.mjs";
 export default class Home extends LitElement {
   render() {
     // Render layers dynamically in order
-    const [{ element: topLayer }, ...others] = userSettings.widgets;
-    let renderRoot = new topLayer();
+    const [{ element: topLayer, position }, ...others] = userSettings.widgets;
+    let renderRoot = new topLayer(position);
 
-    // collapse array into a bunch of nested elements
-
+    // collapse array into a bunch of nested layer elements
     const currentElement = others.reduce(
       /**
        *
@@ -25,7 +24,8 @@ export default class Home extends LitElement {
        * @returns
        */
       (prevLayer, currLayer) => {
-        prevLayer.innerHTML += new currLayer.element().outerHTML;
+        const { element, position } = currLayer;
+        prevLayer.innerHTML += new element(position).outerHTML;
         return /** @type {HTMLElement} */ (prevLayer.lastElementChild);
       },
       renderRoot

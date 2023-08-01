@@ -8,7 +8,7 @@ import { LitElement } from "../libs/lit-all@2.7.6.js";
  * @typedef {typeof settings} UserSettings
  */
 const settings = {
-  /** @type {{element: LitElement, position: "top" | "bottom" | "left" | "right"}[]} */
+  /** @type {{element: WidgetLayer, position: "top" | "bottom" | "left" | "right"}[]} */
   widgets: [
     {
       element: IframesWidget,
