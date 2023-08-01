@@ -3,8 +3,7 @@ import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class TabsWidget extends WidgetLayer {
   widget() {
-    const tabs = ["TAB", "TAB", "TAB", "TAB", "TAB", "TAB", "TAB", "TAB"];
-    console.log(tabs);
+    const tabs = ["", "", "", "", "", "", "", ""];
     return html`<nav slot="widget" class="left">${tabs.map(tab => html`<div>TAB</div>`)}</nav>`;
   }
 }
