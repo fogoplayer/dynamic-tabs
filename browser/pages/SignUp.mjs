@@ -41,11 +41,11 @@ export default class SignUp extends LitElement {
       // const otherUsersWithUsername = await getUserByUsername(
       //   this.username.trim()
       // );
-
-      if (otherUsersWithUsername.length > 0) {
-        this.errorMessage = "That display name is taken, please try again";
-        return;
-      }
+      // 
+      // if (otherUsersWithUsername.length > 0) {
+      //   this.errorMessage = "That display name is taken, please try again";
+      //   return;
+      // }
 
       await emailAndPasswordSignUp(this.email.trim(), this.password.trim());
       authStateChanged((user) => {

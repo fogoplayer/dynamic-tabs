@@ -1,5 +1,5 @@
 {
-  "name": "Dynamic Tabs Browser",
+  "name": "dynamic-tabs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "test": "clear && jest tests/app.test.js && npm run lint",
     "deployprod": "git checkout main && git merge dev --no-edit && git push && firebase deploy --only hosting -P prod && git checkout dev",
     "deploydev": "git checkout dev && git push && firebase deploy --only hosting -P default",
-    "lint": "npx eslint --fix './src' --ext .mjs && npx tsc"
+    "lint": "npx eslint --fix --ext .mjs && npx tsc"
   },
   "author": "Zarin Loosli",
   "license": "ISC",
@@ -18,8 +18,7 @@
     "firebase-tools": "^11.18.0",
     "jest": "^28.1.3",
     "lit": "^2.7.6",
-    "selenium": "^2.20.0",
-    "selenium-webdriver": "^4.3.1",
+    "prettier": "^3.0.0",
     "typescript": "^5.1.6"
   }
 }

@@ -22,7 +22,7 @@ export const auth = getAuth(firebaseApp);
 
 /**
  * Get the current user
- * @returns {User}
+ * @returns {User | null}
  */
 export function getCurrentUser() {
   return auth.currentUser;
@@ -33,8 +33,8 @@ export function getCurrentUser() {
  * @returns {Promise<boolean>}
  */
 export async function isFullUser() {
-  return new Promise((res, rej) => {
-    authStateChanged((user) => res(user && user.email));
+  return new Promise((res) => {
+    authStateChanged((user) => res(!!(user && user.email)));
   });
 }
 

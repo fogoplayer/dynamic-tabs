@@ -33,10 +33,11 @@ export default class App extends LitElement {
    *
    * @param {string} pattern the URL pattern to match for the route.
    * @param {new (context: Context) => LitElement} component the component class to be instantiated when the route is activated.
-   * @param {string?} title the title to display in the URL bar
+   * @param {string} title the title to display in the URL bar
    * @returns {void}
    */
   createRoute(pattern, component, title = "Dynamic Tabs Browser") {
+    document.title = title;
     page(pattern, (context) => {
       this.currentPage = new component(context);
     });

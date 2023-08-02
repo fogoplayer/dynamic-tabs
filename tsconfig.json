@@ -10,5 +10,5 @@
     "strict": true
   },
   "include": ["**/*.js", "**/*.mjs", "**/*.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["browser/node_modules"]
 }

@@ -5,7 +5,7 @@
     "node": true
   },
   "extends": "eslint:recommended",
-  "ignorePatterns": ["lib"],
+  "ignorePatterns": ["lib", "node_modules"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"

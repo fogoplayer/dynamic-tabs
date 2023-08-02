@@ -1,14 +1,10 @@
 /** @typedef {import("../services/user-settings.mjs").UserSettings} UserSettings */
-import { LitElement, html, css, render } from "../libs/lit-all@2.7.6.js";
+/** @typedef {import("../components/WidgetLayer.mjs").default} WidgetLayer */
+import { LitElement, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
 import { getUserSettings } from "../services/user-settings.mjs";
-// import "../components/TabsWidget.mjs";
-// import "../components/SessionsWidget.mjs";
-// import "../components/IframesWidget.mjs";
-// import "../components/Webview.mjs";
+
 import WebView from "../components/Webview.mjs";
-import TabsWidget from "../components/TabsWidget.mjs";
-import WidgetLayer from "../components/WidgetLayer.mjs";
 
 export default class Home extends LitElement {
   static properties = {

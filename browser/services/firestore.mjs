@@ -1,8 +1,8 @@
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").DocumentSnapshot} DocumentSnapshot */
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").Query} Query */
+/** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").CollectionReference} CollectionReference */
 import {
-  CollectionReference,
   collection,
   doc,
   getDoc,
@@ -15,7 +15,7 @@ import firebaseApp from "./firebase-app.mjs";
 export { where } from "../libs/firebase/9.7.0/firebase-firestore.js";
 
 const db = getFirestore(firebaseApp);
-const ADMIN_COLLECTION = collection(db, "admin");
+// const ADMIN_COLLECTION = collection(db, "admin");
 
 /**
  * @param {string} string

@@ -26,6 +26,7 @@ interface PageFunction {
   redirect(path: string): void;
   (options: Options): void;
   start(options?: Options): void;
+  base(path: string): void;
 }
 
 declare const page: PageFunction;
