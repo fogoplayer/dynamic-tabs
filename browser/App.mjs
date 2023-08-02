@@ -11,6 +11,11 @@ const style = document.createElement("style");
 style.textContent = globalCss.cssText;
 document.head.appendChild(style);
 
+// Config Ionic
+window.Ionic = {
+  config: { mode: "ios" },
+};
+
 export default class App extends LitElement {
   static properties = {
     currentPage: { type: Object, state: true },
@@ -32,7 +37,7 @@ export default class App extends LitElement {
    * @returns {void}
    */
   createRoute(pattern, component, title = "Dynamic Tabs Browser") {
-    page(pattern, context => {
+    page(pattern, (context) => {
       this.currentPage = new component(context);
     });
   }

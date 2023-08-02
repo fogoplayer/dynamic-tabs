@@ -48,7 +48,6 @@ export default class WidgetLayer extends LitElement {
       }
 
       :host ::slotted(*) {
-        outline: 1px solid red;
         flex: 1;
       }
 
