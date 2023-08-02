@@ -6,7 +6,7 @@ export default css`
     --theme-primary: black;
     --theme-secondary: darkgray;
     --theme-tertiary: gray --border: 1px solid var(--theme-primary);
-    --box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 1px 0px;
+    --box-shadow: rgba(0, 0, 0, 0.5) 0px 0em 0.25em 0.25em;
 
     /* Fonts */
     --serif: serif;

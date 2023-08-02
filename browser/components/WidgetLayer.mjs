@@ -18,6 +18,13 @@ export default class WidgetLayer extends LitElement {
     if (diff.has("position")) {
       this.classList.remove("top", "bottom", "left", "right", "none");
       this.classList.add(this.position);
+
+      this.classList.remove("inline", "block");
+      if (this.position === "top" || this.position === "bottom") {
+        this.classList.add("block");
+      } else {
+        this.classList.add("inline");
+      }
     }
   }
 
@@ -52,7 +59,8 @@ export default class WidgetLayer extends LitElement {
       }
 
       :host > :first-child {
-        flex: 0;
+        flex-grow: 0;
+        flex-shrink: 0;
       }
 
       :host(.left) {

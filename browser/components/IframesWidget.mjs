@@ -5,8 +5,17 @@ export default class IframesWidget extends WidgetLayer {
   static label = "Side Panel";
 
   widget() {
-    const tabs = ["", "", "", "", "", "", "", ""];
-    return html`<nav slot="widget" class="left">${tabs.map(() => html`<div>IFRAME</div>`)}</nav>`;
+    return html` <section>
+      <ion-segment value="default">
+        <ion-segment-button value="default">
+          <ion-label>Default</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="segment">
+          <ion-label>Segment</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <iframe src="https://zarinloosli.com" frameborder="0"></iframe>
+    </section>`;
   }
 
   static styles = [
@@ -14,6 +23,25 @@ export default class IframesWidget extends WidgetLayer {
     css`
       :host > :first-child {
         background-color: lightblue;
+      }
+
+      section {
+        flex-basis: 30em;
+
+        display: flex;
+        flex-direction: inherit;
+        align-items: stretch;
+
+        position: static;
+        width: unset;
+        height: 100%;
+      }
+
+      :host(.inline) ion-segment {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 20em;
+        justify-content: flex-start;
       }
     `,
   ];
