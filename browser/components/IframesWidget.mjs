@@ -1,8 +1,10 @@
-import { css, html } from "../libs/lit-all@2.7.6.js";
+import { createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class IframesWidget extends WidgetLayer {
   label = "App Panel";
+
+  lastFrameInput = createRef();
 
   constructor() {
     super();
@@ -16,6 +18,22 @@ export default class IframesWidget extends WidgetLayer {
       /** @type {string[]} */
       frames: [],
     };
+  }
+
+  /** @param {UpdatedDiff} diff  */
+  updated(diff) {
+    super.updated(diff);
+    if (diff.has("settings")) {
+      const newFrameSettings = this.settings.frames;
+      const oldFrameSettings = /** @type {IframesWidget["settings"]} */ (diff.get("settings"))?.frames;
+      // TODO this doesn't respect deletion
+      debugger;
+      if (oldFrameSettings?.length !== newFrameSettings?.length) {
+        // TODO check if the modal is open first
+        /** @type {HTMLInputElement} */
+        (this.lastFrameInput.value)?.focus();
+      }
+    }
   }
 
   widget() {
@@ -55,7 +73,7 @@ export default class IframesWidget extends WidgetLayer {
           ${this.settings.frames.map(
             (frame, i) => html`
               <ion-item>
-                <ion-input label="App ${i}" type="url" value=${frame}></ion-input>
+                <ion-input label="App ${i + 1}" type="url" ${ref(this.lastFrameInput)} value=${frame}></ion-input>
               </ion-item>
             `
           )}
@@ -63,7 +81,14 @@ export default class IframesWidget extends WidgetLayer {
             <ion-input
               label="Add An App"
               type="url"
-              @ionFocus=${async () => this.updateWidgetSetting("frames", [...this.settings.frames, ""])}
+              @ionInput=${async () => {
+                this.updateWidgetSetting("frames", [...this.settings.frames, "Test"]);
+                this.requestUpdate();
+              }}
+              @ionFocus=${async () => {
+                this.updateWidgetSetting("frames", [...this.settings.frames, "Test"]);
+                this.requestUpdate();
+              }}
             ></ion-input>
           </ion-item>
         </ion-list>
