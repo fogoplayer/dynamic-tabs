@@ -16,34 +16,34 @@ const observers = new Set();
 const settings = {
   /**
    * @type {{
-   *  element: WidgetLayer;
+   *  element: string;
    *  settings: WidgetLayer["settings"];
    * }[]}
    */
   widgets: [
     {
-      element: new IframesWidget(),
+      element: "iframes-widget",
       settings: {
         position: "right",
         mode: "visible",
         frames: ["https://zarinloosli.com", "https://chromeunboxed.com"],
       },
     },
-    { element: new SessionsWidget(), settings: { position: "left", mode: "visible" } },
-    { element: new TabsWidget(), settings: { position: "top", mode: "visible" } },
+    { element: "sessions-widget", settings: { position: "left", mode: "visible" } },
+    { element: "tabs-widget", settings: { position: "top", mode: "visible" } },
   ],
   /** @type {"ios" | "md"} */
   mode: "ios",
 };
 
-
 /**
- *
+ * Gets the user settings and passes them into a callback and/or returns them
  * @param {SettingsObserver} callback
  */
-export function getUserSettings(callback) {
+export function getUserSettings(callback = () => {}) {
   observers.add(callback);
   callback(settings);
+  return settings;
 }
 
 /**

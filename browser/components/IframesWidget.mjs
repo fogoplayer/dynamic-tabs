@@ -55,10 +55,17 @@ export default class IframesWidget extends WidgetLayer {
           ${this.settings.frames.map(
             (frame, i) => html`
               <ion-item>
-                <input type="text" value=${frame} />
+                <ion-input label="App ${i}" type="url" value=${frame}></ion-input>
               </ion-item>
             `
           )}
+          <ion-item>
+            <ion-input
+              label="Add An App"
+              type="url"
+              @ionFocus=${async () => this.updateWidgetSetting("frames", [...this.settings.frames, ""])}
+            ></ion-input>
+          </ion-item>
         </ion-list>
       </ion-content>`;
   }

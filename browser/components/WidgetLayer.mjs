@@ -1,6 +1,7 @@
 /** @typedef {import("../libs/lit-all@2.7.6.js").Ref} Ref */
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
+import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
 
 /** @abstract */
 export default class WidgetLayer extends LitElement {
@@ -19,29 +20,31 @@ export default class WidgetLayer extends LitElement {
     },
   };
 
+  /** @type {Ref} */
+  settingsModal = createRef();
+
+  label = "This widget has not been labeled";
+
   constructor() {
     super();
     /** @type {"top" | "bottom" | "left" | "right" | "none"} */
     this.position;
 
-    /**
-     * @type {{
-     *  position: "top" | "bottom" | "left" | "right" | "none";
-     *  mode: "hidden" | "expanding" | "minimized" | "visible";
-     *  [key: string]: unknown | undefined
-     * }}
-     */
-    this.settings = {
-      /** @type {WidgetLayer["settings"]["position"]} */
-      position: "left",
+    getUserSettings(
+      ({ widgets }) =>
+        /**
+         * @type {{
+         *  position: "top" | "bottom" | "left" | "right" | "none";
+         *  mode: "hidden" | "expanding" | "minimized" | "visible";
+         *  [key: string]: unknown | undefined
+         * }}
+         */
+        (this.settings = widgets[this.index]?.settings)
+    );
 
-      /** @type {WidgetLayer["settings"]["mode"]} */
-      mode: "visible",
-    };
+    /** @type {number} */
+    this.index;
   }
-
-  /** @type {Ref} */
-  settingsModal = createRef();
 
   /** @param {UpdatedDiff} diff */
   updated(diff) {
@@ -49,7 +52,7 @@ export default class WidgetLayer extends LitElement {
 
     if (diff.has("settings")) {
       const oldSettings = /** @type {WidgetLayer["settings"]} */ (diff.get("settings"));
-      if (this.settings.position !== oldSettings?.position) {
+      if (this.settings && this.settings?.position !== oldSettings?.position) {
         this.classList.remove("top", "bottom", "left", "right", "none");
         this.classList.add(this.settings.position);
 
@@ -61,6 +64,10 @@ export default class WidgetLayer extends LitElement {
         }
       }
     }
+
+    if (diff.has("index")) {
+      this.settings = getUserSettings().widgets[this.index].settings;
+    }
   }
 
   render() {
@@ -70,8 +77,6 @@ export default class WidgetLayer extends LitElement {
       <slot></slot>
     `;
   }
-
-  label = "This widget has not been labeled";
 
   /**
    * The widget to be displayed alongside the slotted content.
@@ -99,6 +104,18 @@ export default class WidgetLayer extends LitElement {
   hideSettings() {
     // @ts-ignore
     this.settingsModal.value?.dismiss();
+  }
+
+  /**
+   * @param {string} setting
+   * @param {unknown} value
+   */
+  updateWidgetSetting(setting, value) {
+    let { widgets } = getUserSettings();
+    if (widgets[this.index].settings) {
+      widgets[this.index].settings[setting] = value;
+    }
+    updateSetting("widgets", [...widgets]);
   }
 
   static styles = [
