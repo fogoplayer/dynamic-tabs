@@ -2,7 +2,7 @@ import { css, html } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class SessionsWidget extends WidgetLayer {
-  static label = "Sessions List";
+  label = "Sessions List";
 
   widget() {
     const tabs = ["", "", "", "", "", "", "", ""];

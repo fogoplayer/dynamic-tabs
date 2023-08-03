@@ -40,7 +40,7 @@ export default class WidgetLayer extends LitElement {
     `;
   }
 
-  static label = "This widget has not been labeled";
+  label = "This widget has not been labeled";
 
   /**
    * The widget to be displayed alongside the slotted content.

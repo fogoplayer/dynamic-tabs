@@ -2,7 +2,7 @@ import { css, html } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class IframesWidget extends WidgetLayer {
-  static label = "Side Panel";
+  label = "Side Panel";
 
   widget() {
     return html`<section>
