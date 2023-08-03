@@ -4,11 +4,15 @@ import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
 export default class WebView extends LitElement {
   static properties = {
     widgets: { type: Object, state: true },
+    mode: { type: String, state: true },
   };
 
   constructor() {
     super();
-    getUserSettings(({ widgets }) => (this.widgets = widgets));
+    getUserSettings(({ widgets, mode }) => {
+      this.widgets = widgets;
+      this.mode = mode;
+    });
   }
 
   render() {
@@ -36,6 +40,21 @@ export default class WebView extends LitElement {
                   </ion-select>
                 </ion-item>`
             )}
+            <ion-select
+              label="mode"
+              label-placement="fixed"
+              interface="popover"
+              value="${this.mode}"
+              @ionChange=${async (e) => {
+                console.log(e);
+                this.mode = e.detail.value;
+                updateSetting("mode", this.mode);
+                document.documentElement.classList.toggle("ios");
+              }}
+            >
+              <ion-select-option value="ios">iOS</ion-select-option>
+              <ion-select-option value="md">MD</ion-select-option>
+            </ion-select>
           </ion-list>
         </div>
       </main>

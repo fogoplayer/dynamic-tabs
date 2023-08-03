@@ -5,6 +5,7 @@ import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
 
 import Home from "./pages/Home.mjs";
+import { getUserSettings } from "./services/user-settings.mjs";
 
 // Add global styles to head for resets and fonts
 const style = document.createElement("style");
@@ -12,9 +13,11 @@ style.textContent = globalCss.cssText;
 document.head.appendChild(style);
 
 // Config Ionic
-window.Ionic = {
-  config: { mode: "ios" },
-};
+getUserSettings(({ mode }) => {
+  window.Ionic = {
+    config: { mode },
+  };
+});
 
 export default class App extends LitElement {
   static properties = {

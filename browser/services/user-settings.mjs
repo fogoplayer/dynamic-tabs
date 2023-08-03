@@ -20,6 +20,8 @@ const settings = {
     { element: SessionsWidget, position: "left" },
     { element: TabsWidget, position: "top" },
   ],
+  /** @type {"ios" | "md"} */
+  mode: "md"
 };
 
 console.log(settings);
