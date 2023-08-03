@@ -6,12 +6,38 @@ import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js"
 export default class WidgetLayer extends LitElement {
   static properties = {
     position: { type: String, reflect: true },
+    settings: {
+      type: Object,
+      reflect: true,
+      /**
+       * @param {WidgetLayer["settings"]} newVal
+       * @param {WidgetLayer["settings"]} oldVal
+       */
+      hasChanged(newVal, oldVal) {
+        return !(JSON.stringify(newVal) === JSON.stringify(oldVal));
+      },
+    },
   };
 
   constructor() {
     super();
     /** @type {"top" | "bottom" | "left" | "right" | "none"} */
     this.position;
+
+    /**
+     * @type {{
+     *  position: "top" | "bottom" | "left" | "right" | "none";
+     *  mode: "hidden" | "expanding" | "minimized" | "visible";
+     *  [key: string]: unknown | undefined
+     * }}
+     */
+    this.settings = {
+      /** @type {WidgetLayer["settings"]["position"]} */
+      position: "left",
+
+      /** @type {WidgetLayer["settings"]["mode"]} */
+      mode: "visible",
+    };
   }
 
   /** @type {Ref} */
@@ -19,15 +45,20 @@ export default class WidgetLayer extends LitElement {
 
   /** @param {UpdatedDiff} diff */
   updated(diff) {
-    if (diff.has("position")) {
-      this.classList.remove("top", "bottom", "left", "right", "none");
-      this.classList.add(this.position);
+    // console.log("Widget:", this.label, this.settings, diff.get("settings"));
 
-      this.classList.remove("inline", "block");
-      if (this.position === "top" || this.position === "bottom") {
-        this.classList.add("block");
-      } else {
-        this.classList.add("inline");
+    if (diff.has("settings")) {
+      const oldSettings = /** @type {WidgetLayer["settings"]} */ (diff.get("settings"));
+      if (this.settings.position !== oldSettings?.position) {
+        this.classList.remove("top", "bottom", "left", "right", "none");
+        this.classList.add(this.settings.position);
+
+        this.classList.remove("inline", "block");
+        if (this.settings.position === "top" || this.settings.position === "bottom") {
+          this.classList.add("block");
+        } else {
+          this.classList.add("inline");
+        }
       }
     }
   }
@@ -69,9 +100,6 @@ export default class WidgetLayer extends LitElement {
     // @ts-ignore
     this.settingsModal.value?.dismiss();
   }
-
-  /** @type {unknown} */
-  settings = {};
 
   static styles = [
     globalCss,

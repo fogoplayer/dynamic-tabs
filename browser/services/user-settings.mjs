@@ -17,26 +17,25 @@ const settings = {
   /**
    * @type {{
    *  element: WidgetLayer;
-   *  position: "top" | "bottom" | "left" | "right" | "none";
-   *  mode: "hidden" | "expanding" | "minimized" | "visible";
-   *  settings: unknown;
+   *  settings: WidgetLayer["settings"];
    * }[]}
    */
   widgets: [
     {
       element: new IframesWidget(),
-      position: "right",
-      mode: "visible",
-      settings: { frames: ["https://zarinloosli.com", "https://chromeunboxed.com"] },
+      settings: {
+        position: "right",
+        mode: "visible",
+        frames: ["https://zarinloosli.com", "https://chromeunboxed.com"],
+      },
     },
-    { element: new SessionsWidget(), position: "left", mode: "visible", settings: {} },
-    { element: new TabsWidget(), position: "top", mode: "visible", settings: {} },
+    { element: new SessionsWidget(), settings: { position: "left", mode: "visible" } },
+    { element: new TabsWidget(), settings: { position: "top", mode: "visible" } },
   ],
   /** @type {"ios" | "md"} */
   mode: "ios",
 };
 
-console.log(settings);
 
 /**
  *

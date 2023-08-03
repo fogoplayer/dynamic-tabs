@@ -4,6 +4,20 @@ import WidgetLayer from "./WidgetLayer.mjs";
 export default class IframesWidget extends WidgetLayer {
   label = "App Panel";
 
+  constructor() {
+    super();
+    this.settings = {
+      /** @type {WidgetLayer["settings"]["position"]} */
+      position: "right",
+
+      /** @type {WidgetLayer["settings"]["mode"]} */
+      mode: "visible",
+
+      /** @type {string[]} */
+      frames: [],
+    };
+  }
+
   widget() {
     this.showSettings();
 
@@ -48,11 +62,6 @@ export default class IframesWidget extends WidgetLayer {
         </ion-list>
       </ion-content>`;
   }
-
-  settings = {
-    /** @type {string[]} */
-    frames: [],
-  };
 
   static styles = [
     ...WidgetLayer.styles,
