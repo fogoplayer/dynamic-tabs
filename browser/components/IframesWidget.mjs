@@ -5,6 +5,8 @@ export default class IframesWidget extends WidgetLayer {
   label = "Side Panel";
 
   widget() {
+    this.showSettings();
+
     return html`<section>
       <nav>
         <ion-segment value="default">
@@ -27,8 +29,10 @@ export default class IframesWidget extends WidgetLayer {
   settingsPage() {
     return html` <ion-header>
         <ion-toolbar>
-          <ion-back-button></ion-back-button>
-          <ion-title>${IframesWidget.label} Settings</ion-title>
+          <ion-title>${this.label} Settings</ion-title>
+          <ion-buttons slot="primary">
+            <ion-button @click=${this.hideSettings}>Close</ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
