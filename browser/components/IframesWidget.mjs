@@ -2,7 +2,7 @@ import { css, html } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class IframesWidget extends WidgetLayer {
-  label = "Side Panel";
+  label = "App Panel";
 
   widget() {
     this.showSettings();
@@ -27,7 +27,7 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   settingsPage() {
-    return html` <ion-header>
+    return html`<ion-header>
         <ion-toolbar>
           <ion-title>${this.label} Settings</ion-title>
           <ion-buttons slot="primary">
@@ -36,12 +36,23 @@ export default class IframesWidget extends WidgetLayer {
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-item>
-          <ion-label position="stacked">Enter your name</ion-label>
-          <ion-input type="text" placeholder="Your name"></ion-input>
-        </ion-item>
+        <h2>Apps</h2>
+        <ion-list>
+          ${this.settings.frames.map(
+            (frame, i) => html`
+              <ion-item>
+                <input type="text" value=${frame} />
+              </ion-item>
+            `
+          )}
+        </ion-list>
       </ion-content>`;
   }
+
+  settings = {
+    /** @type {string[]} */
+    frames: [],
+  };
 
   static styles = [
     ...WidgetLayer.styles,

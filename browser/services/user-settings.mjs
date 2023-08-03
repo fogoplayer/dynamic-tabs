@@ -23,7 +23,12 @@ const settings = {
    * }[]}
    */
   widgets: [
-    { element: new IframesWidget(), position: "right", mode: "visible", settings: {} },
+    {
+      element: new IframesWidget(),
+      position: "right",
+      mode: "visible",
+      settings: { frames: ["https://zarinloosli.com", "https://chromeunboxed.com"] },
+    },
     { element: new SessionsWidget(), position: "left", mode: "visible", settings: {} },
     { element: new TabsWidget(), position: "top", mode: "visible", settings: {} },
   ],
