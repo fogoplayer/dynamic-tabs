@@ -14,11 +14,18 @@ const observers = new Set();
  * @typedef {typeof settings} UserSettings
  */
 const settings = {
-  /** @type {{element: typeof WidgetLayer, position: "top" | "bottom" | "left" | "right"}[]} */
+  /**
+   * @type {{
+   *  element: WidgetLayer;
+   *  position: "top" | "bottom" | "left" | "right" | "none";
+   *  mode: "hidden" | "expanding" | "minimized" | "visible";
+   *  settings: unknown;
+   * }[]}
+   */
   widgets: [
-    { element: IframesWidget, position: "right" },
-    { element: SessionsWidget, position: "left" },
-    { element: TabsWidget, position: "top" },
+    { element: new IframesWidget(), position: "right", mode: "visible", settings: {} },
+    { element: new SessionsWidget(), position: "left", mode: "visible", settings: {} },
+    { element: new TabsWidget(), position: "top", mode: "visible", settings: {} },
   ],
   /** @type {"ios" | "md"} */
   mode: "ios",

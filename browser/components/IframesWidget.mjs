@@ -15,13 +15,28 @@ export default class IframesWidget extends WidgetLayer {
             <ion-label>Segment</ion-label>
           </ion-segment-button>
         </ion-segment>
-        <ion-button fill="clear">
+        <ion-button fill="clear" @click=${this.showSettings}>
           <ion-icon name="settings-outline"></ion-icon>
         </ion-button>
       </nav>
 
       <iframe src="https://zarinloosli.com" frameborder="0"></iframe>
     </section>`;
+  }
+
+  settingsPage() {
+    return html` <ion-header>
+        <ion-toolbar>
+          <ion-back-button></ion-back-button>
+          <ion-title>${IframesWidget.label} Settings</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Enter your name</ion-label>
+          <ion-input type="text" placeholder="Your name"></ion-input>
+        </ion-item>
+      </ion-content>`;
   }
 
   static styles = [

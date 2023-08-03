@@ -1,5 +1,6 @@
+/** @typedef {import("../libs/lit-all@2.7.6.js").Ref} Ref */
 import globalCss from "../global-styles/global.css.mjs";
-import { LitElement, css, html } from "../libs/lit-all@2.7.6.js";
+import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
 
 /** @abstract */
 export default class WidgetLayer extends LitElement {
@@ -12,6 +13,9 @@ export default class WidgetLayer extends LitElement {
     /** @type {"top" | "bottom" | "left" | "right" | "none"} */
     this.position;
   }
+
+  /** @type {Ref} */
+  settingsModal = createRef();
 
   /** @param {UpdatedDiff} diff */
   updated(diff) {
@@ -31,6 +35,7 @@ export default class WidgetLayer extends LitElement {
   render() {
     return html`
       ${this.widget()}
+      <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
       <slot></slot>
     `;
   }
@@ -45,6 +50,28 @@ export default class WidgetLayer extends LitElement {
   widget() {
     throw new Error("WidgetLayer is an abstract class that must be extended to be implemented");
   }
+
+  /**
+   * A page allowing control of the widget's settings.
+   * @type {()=> ReturnType<html>} widget
+   * @abstract
+   */
+  settingsPage() {
+    return html``;
+  }
+
+  showSettings() {
+    // @ts-ignore
+    this.settingsModal.value?.present();
+  }
+
+  hideSettings() {
+    // @ts-ignore
+    this.settingsModal.value?.dismiss();
+  }
+
+  /** @type {unknown} */
+  settings = {};
 
   static styles = [
     globalCss,
