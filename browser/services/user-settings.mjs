@@ -21,7 +21,7 @@ const settings = {
     { element: TabsWidget, position: "top" },
   ],
   /** @type {"ios" | "md"} */
-  mode: "md"
+  mode: "ios",
 };
 
 console.log(settings);

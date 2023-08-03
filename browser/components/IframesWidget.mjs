@@ -5,15 +5,21 @@ export default class IframesWidget extends WidgetLayer {
   static label = "Side Panel";
 
   widget() {
-    return html` <section>
-      <ion-segment value="default">
-        <ion-segment-button value="default">
-          <ion-label>Default</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="segment">
-          <ion-label>Segment</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+    return html`<section>
+      <nav>
+        <ion-segment value="default">
+          <ion-segment-button value="default">
+            <ion-label>Default</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="segment">
+            <ion-label>Segment</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <ion-button fill="clear">
+          <ion-icon name="settings-outline"></ion-icon>
+        </ion-button>
+      </nav>
+
       <iframe src="https://zarinloosli.com" frameborder="0"></iframe>
     </section>`;
   }
@@ -37,11 +43,32 @@ export default class IframesWidget extends WidgetLayer {
         height: 100%;
       }
 
-      :host(.inline) ion-segment {
+      section nav {
         display: flex;
-        flex-direction: column;
-        flex-basis: 20em;
+      }
+
+      section ion-segment {
+        flex: 1;
+        flex-basis: fit-content;
+
+        display: flex;
+        flex-direction: inherit;
         justify-content: flex-start;
+        align-items: center;
+
+        padding: 0.25em;
+      }
+
+      section iframe {
+        flex: 1;
+      }
+
+      :host(.inline) nav {
+        flex-direction: column;
+      }
+
+      :host(.block) nav {
+        flex-direction: row;
       }
     `,
   ];
