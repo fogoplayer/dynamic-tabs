@@ -40,21 +40,23 @@ export default class WebView extends LitElement {
                   </ion-select>
                 </ion-item>`
             )}
-            <ion-select
-              label="mode"
-              label-placement="fixed"
-              interface="popover"
-              value="${this.mode}"
-              @ionChange=${async (e) => {
-                console.log(e);
-                this.mode = e.detail.value;
-                updateSetting("mode", this.mode);
-                document.documentElement.classList.toggle("ios");
-              }}
-            >
-              <ion-select-option value="ios">iOS</ion-select-option>
-              <ion-select-option value="md">MD</ion-select-option>
-            </ion-select>
+            <ion-item>
+              <ion-select
+                label="mode"
+                label-placement="fixed"
+                interface="popover"
+                value="${this.mode}"
+                @ionChange=${async (e) => {
+                  console.log(e);
+                  this.mode = e.detail.value;
+                  updateSetting("mode", this.mode);
+                  document.documentElement.classList.toggle("ios");
+                }}
+              >
+                <ion-select-option value="ios">iOS</ion-select-option>
+                <ion-select-option value="md">MD</ion-select-option>
+              </ion-select>
+            </ion-item>
           </ion-list>
         </div>
       </main>
