@@ -58,6 +58,12 @@ export default class WebView extends LitElement {
               </ion-select>
             </ion-item>
           </ion-list>
+          <a href="./sign-up">
+            <ion-button>Sign Up</ion-button>
+          </a>
+          <a href="./log-in">
+            <ion-button>Log In</ion-button>
+          </a>
         </div>
       </main>
     `;

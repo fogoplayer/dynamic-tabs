@@ -3,9 +3,12 @@ import { css, LitElement } from "./libs/lit-all@2.7.6.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
+import { getUserSettings } from "./services/user-settings.mjs";
 
 import Home from "./pages/Home.mjs";
-import { getUserSettings } from "./services/user-settings.mjs";
+import SignUp from "./pages/SignUp.mjs";
+import LogIn from "./pages/LogIn.mjs";
+import ForgotPassword from "./pages/ForgotPassword.mjs";
 
 // Add global styles to head for resets and fonts
 const style = document.createElement("style");
@@ -28,6 +31,9 @@ export default class App extends LitElement {
     super();
     page.base("/browser");
     this.createRoute("/", Home);
+    this.createRoute("/log-in", LogIn);
+    this.createRoute("/sign-up", SignUp);
+    this.createRoute("/forgot-password", ForgotPassword);
     page.start();
   }
 
