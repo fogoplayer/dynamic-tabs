@@ -8,7 +8,6 @@ import { authStateChanged, emailAndPasswordSignUp } from "../services/auth.mjs";
 
 export default class SignUp extends LitElement {
   static properties = {
-    username: { type: String, state: true },
     email: { type: String, state: true },
     password: { type: String, state: true },
     errorMessage: { type: String, state: true },
@@ -20,7 +19,6 @@ export default class SignUp extends LitElement {
    */
   constructor(context) {
     super();
-    this.username = "";
     this.email = "";
     this.password = "";
     /** @type {{ [key: string]: string}} */
@@ -38,14 +36,6 @@ export default class SignUp extends LitElement {
   async signUp(e) {
     try {
       e.preventDefault();
-      // const otherUsersWithUsername = await getUserByUsername(
-      //   this.username.trim()
-      // );
-      // 
-      // if (otherUsersWithUsername.length > 0) {
-      //   this.errorMessage = "That display name is taken, please try again";
-      //   return;
-      // }
 
       await emailAndPasswordSignUp(this.email.trim(), this.password.trim());
       authStateChanged((user) => {
@@ -64,20 +54,10 @@ export default class SignUp extends LitElement {
       <main>
         <form @submit=${this.signUp}>
           <label>
-            Display Name
-            <input
-              type="text"
-              @change=${(/** @type {HTMLInputEvent} */ e) =>
-                (this.username = e.target.value)}
-              required
-            />
-          </label>
-          <label>
             Email
             <input
               type="email"
-              @change=${(/** @type {HTMLInputEvent} */ e) =>
-                (this.email = e.target.value)}
+              @change=${(/** @type {HTMLInputEvent} */ e) => (this.email = e.target.value)}
               required
             />
           </label>
@@ -85,13 +65,11 @@ export default class SignUp extends LitElement {
             Password
             <input
               type="password"
-              @change=${(/** @type {HTMLInputEvent} */ e) =>
-                (this.password = e.target.value)}
+              @change=${(/** @type {HTMLInputEvent} */ e) => (this.password = e.target.value)}
               required
             />
           </label>
-          ${this.errorMessage &&
-          html`<p class="error-message">${this.errorMessage}</p>`}
+          ${this.errorMessage && html`<p class="error-message">${this.errorMessage}</p>`}
           <button class="button">Sign Up</button>
           <p>
             Already have an account?
