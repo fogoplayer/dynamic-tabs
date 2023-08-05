@@ -2,7 +2,10 @@
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").DocumentSnapshot} DocumentSnapshot */
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").Query} Query */
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").CollectionReference} CollectionReference */
+/** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").DocumentData} DocumentData */
+/** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<DocumentData>} DocumentContents */
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -10,9 +13,10 @@ import {
   getFirestore,
   onSnapshot,
   query,
+  setDoc,
 } from "../libs/firebase/9.7.0/firebase-firestore.js";
 import firebaseApp from "./firebase-app.mjs";
-export { where } from "../libs/firebase/9.7.0/firebase-firestore.js";
+export { where, addDoc, setDoc } from "../libs/firebase/9.7.0/firebase-firestore.js";
 
 const db = getFirestore(firebaseApp);
 // const ADMIN_COLLECTION = collection(db, "admin");
@@ -131,10 +135,24 @@ export async function watchDocDatas(collectionRef, callback) {
 }
 
 /**
- * @param {CollectionReference} collection
+ * @template {DocumentContents} T
+ * @param {T} data
+ * @param {CollectionReference} collectionReference
+ * @param {string?} docName
+ */
+export function createDoc(data, collectionReference, docName) {
+  if (typeof collectionReference === "string") collectionReference = collectionRef(collectionReference);
+
+  if (docName) return setDoc(doc(collectionReference, docName), data);
+  else return addDoc(collectionReference, data);
+}
+
+/**
+ * @param {CollectionReference | string} collection
  * @param {string} filename
  */
 export function docRef(collection, filename) {
+  if (typeof collection === "string") collection = collectionRef(collection);
   return doc(collection, filename);
 }
 
