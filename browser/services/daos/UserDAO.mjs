@@ -1,5 +1,6 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 import { collectionRef, docRef, setDoc } from "../firestore.mjs";
+import { createProfile } from "./ProfileDAO.mjs";
 
 export const USER_COLLECTION = collectionRef("users");
 
@@ -38,7 +39,7 @@ export async function createUserData(uid) {
     userDocRef,
     /** @type {UserSchema} */
     {
-      profiles: [],
+      profiles: [await createProfile()],
       autocompleteHistory: [],
       /** @type {UserSettings} */
       settings: {

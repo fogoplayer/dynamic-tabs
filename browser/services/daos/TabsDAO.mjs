@@ -1,5 +1,5 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
-import { addDoc } from "firebase/firestore";
+import { addDoc, updateDoc } from "firebase/firestore";
 import { collectionRef } from "../firestore.mjs";
 
 /**
@@ -36,4 +36,14 @@ export async function createTab(windowRef) {
     tabs: [],
   });
   return tabRef;
+}
+
+/**
+ *
+ * @param {DocumentReference} tabRef
+ * @param {Partial<TabSchema>} data
+ * @returns
+ */
+export async function updateTab(tabRef, data) {
+  return await updateDoc(tabRef, data);
 }

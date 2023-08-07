@@ -6,9 +6,10 @@ import { collectionRef, docRef } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { PROFILES_COLLECTION } from "./ProfileDAO.mjs";
+import { createWindow } from "./WindowDAO.mjs";
 
 const { uid } = /** @type {User} */ (getCurrentUser());
-export const SESSIONS_COLLECTION = "profiles"
+export const SESSIONS_COLLECTION = "sessions";
 
 /**
  * @typedef {{
@@ -18,12 +19,11 @@ export const SESSIONS_COLLECTION = "profiles"
  * }} SessionSchema
  */
 
-
 /**
  * @typedef {Omit<SessionSchema, "windows"> & {
-*  windows: WindowData[]
-* }} SessionData
-*/
+ *  windows: WindowData[]
+ * }} SessionData
+ */
 
 /**
  *
@@ -36,18 +36,16 @@ export async function createSession(profileRef) {
     icon: "",
     windows: [],
   });
+  await createWindow(sessionRef)
   return sessionRef;
 }
 
 /**
- * 
- * @param {string} profileId
- * @param {string} sessionId 
- * @param {any} data 
- * @returns 
+ *
+ * @param {DocumentReference} sessionRef
+ * @param {Partial<SessionSchema>} data
+ * @returns
  */
-export async function updateProfile(profileId, sessionId, data) {
-  return await updateDoc(docRef(`${USER_COLLECTION}/${uid}/${
-    PROFILES_COLLECTION}/${profileId}/${
-      SESSIONS_COLLECTION}/${sessionId}`, profileId), data);
+export async function updateProfile(sessionRef, data) {
+  return await updateDoc(sessionRef, data);
 }
