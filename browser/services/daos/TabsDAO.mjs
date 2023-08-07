@@ -6,8 +6,22 @@ import { collectionRef } from "../firestore.mjs";
  * @typedef {{
  *  name: string;
  *  icon: string;
- *  windows: DocumentReference[]
- * }} SessionSchema
+ *  history: DocumentReference[]
+ * }} TabSchema
+ */
+
+/**
+ * @typedef {{
+ *  timestamp: Date;
+ *  url: string;
+ * }} HistoryEntry
+ */
+
+/**
+ * @typedef {Omit<TabSchema, "history"> & {
+ *  history: HistoryEntry[];
+ *  ref: DocumentReference;
+ * }} TabData
  */
 
 /**

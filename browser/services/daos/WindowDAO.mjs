@@ -1,4 +1,5 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
+/** @typedef {import("./TabsDAO.mjs").TabData} TabData */
 import { addDoc } from "firebase/firestore";
 import { collectionRef } from "../firestore.mjs";
 
@@ -6,9 +7,16 @@ import { collectionRef } from "../firestore.mjs";
  * @typedef {{
  *  name: string;
  *  icon: string;
- *  tqabs: DocumentReference[]
+ *  tabs: DocumentReference[]
  * }} WindowSchema
  */
+
+
+/**
+ * @typedef {Omit<WindowSchema, "tabs"> & {
+*  tabs: TabData[]
+* }} WindowData
+*/
 
 /**
  *

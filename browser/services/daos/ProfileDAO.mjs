@@ -7,6 +7,7 @@ import { collectionRef, docRef } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 
 const { uid } = /** @type {User} */ (getCurrentUser());
+export const PROFILES_COLLECTION = "profiles"
 
 /**
  * @typedef {{
@@ -15,6 +16,7 @@ const { uid } = /** @type {User} */ (getCurrentUser());
  *  pinnedTab: DocumentReference[];
  * }} ProfileSchema
  */
+
 export async function createProfile() {
   const profileRef = await addDoc(
     collectionRef(`${USER_COLLECTION}/${uid}/profiles`),
@@ -28,6 +30,12 @@ export async function createProfile() {
   return profileRef;
 }
 
+/**
+ * 
+ * @param {string} profileId 
+ * @param {any} data 
+ * @returns 
+ */
 export async function updateProfile(profileId, data) {
-  return await updateDoc(docRef(`${USER_COLLECTION}/${uid}/profiles/`, profileId), data);
+  return await updateDoc(docRef(`${USER_COLLECTION}/${uid}/${PROFILES_COLLECTION}/`, profileId), data);
 }
