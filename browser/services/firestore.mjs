@@ -6,6 +6,8 @@
 /** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<DocumentData>} DocumentContents */
 import {
   addDoc,
+  arrayRemove,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -162,3 +164,6 @@ export function docRef(collection, filename) {
 export function collectionRef(name) {
   return collection(db, name);
 }
+
+export const push = arrayUnion;
+export const pop = arrayRemove;

@@ -1,8 +1,12 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("./TabsDAO.mjs").TabData} TabData */
 /** @typedef {import("../auth.mjs").User} User */
+/**
+ * @template T
+ * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
+ */
 import { addDoc, updateDoc } from "firebase/firestore";
-import { collectionRef, docRef } from "../firestore.mjs";
+import { collectionRef, docRef, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { createTab } from "./TabsDAO.mjs";
@@ -35,14 +39,17 @@ export async function createWindow(sessionRef) {
     icon: "",
     tabs: [],
   });
-  await createTab(windowRef)
+
+  updateWindow(windowRef, {
+    tabs: push(await createTab(windowRef)),
+  });
   return windowRef;
 }
 
 /**
  *
  * @param {DocumentReference} windowRef
- * @param {Partial<WindowSchema>} data
+ * @param {Partial<WithFieldValue<WindowSchema>>} data
  * @returns
  */
 export async function updateWindow(windowRef, data) {

@@ -1,8 +1,12 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("../auth.mjs").User} User */
 /** @typedef {import("./WindowDAO.mjs").WindowData} WindowData */
+/**
+ * @template T
+ * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
+ */
 import { addDoc, updateDoc } from "firebase/firestore";
-import { collectionRef, docRef } from "../firestore.mjs";
+import { collectionRef, docRef, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { PROFILES_COLLECTION } from "./ProfileDAO.mjs";
@@ -36,16 +40,18 @@ export async function createSession(profileRef) {
     icon: "",
     windows: [],
   });
-  await createWindow(sessionRef)
+  updateSession(profileRef, {
+    windows: push(await createWindow(profileRef)),
+  });
   return sessionRef;
 }
 
 /**
  *
  * @param {DocumentReference} sessionRef
- * @param {Partial<SessionSchema>} data
+ * @param {Partial<WithFieldValue<SessionSchema>>} data
  * @returns
  */
-export async function updateProfile(sessionRef, data) {
+export async function updateSession(sessionRef, data) {
   return await updateDoc(sessionRef, data);
 }
