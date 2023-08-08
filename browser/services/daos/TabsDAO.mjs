@@ -3,7 +3,7 @@
  * @template T
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
-import { addDoc, updateDoc } from "firebase/firestore";
+import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
 import { collectionRef } from "../firestore.mjs";
 
 /**
@@ -35,7 +35,7 @@ import { collectionRef } from "../firestore.mjs";
  */
 export async function createTab(windowRef) {
   const tabRef = await addDoc(
-    collectionRef(`${windowRef.path}/windows`),
+    collectionRef(`${windowRef.path}/tabs`),
     /** @type {TabSchema} */
     ({
       name: "",

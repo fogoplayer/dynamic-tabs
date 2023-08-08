@@ -5,7 +5,7 @@
  * @template T
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
-import { addDoc, updateDoc } from "firebase/firestore";
+import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
 import { collectionRef, docRef, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
@@ -25,7 +25,6 @@ import { createTab } from "./TabsDAO.mjs";
  * }} WindowData
  */
 
-const { uid } = /** @type {User} */ (getCurrentUser());
 export const SESSIONS_COLLECTION = "sessions";
 
 /**

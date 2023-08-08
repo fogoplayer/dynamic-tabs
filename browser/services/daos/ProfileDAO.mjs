@@ -11,7 +11,6 @@ import { collectionRef, docRef, push } from "../firestore.mjs";
 import { createSession } from "./SessionDAO.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 
-const { uid } = /** @type {User} */ (getCurrentUser());
 export const PROFILES_COLLECTION = "profiles";
 
 /**
@@ -24,13 +23,15 @@ export const PROFILES_COLLECTION = "profiles";
 
 /**
  * @typedef {Omit<ProfileSchema, "windows"> & {
- *  windows: SessionData[]
+ *  sessions: SessionData[]
  * }} ProfileData
  */
 
 export async function createProfile() {
+  const { uid } = /** @type {User} */ (getCurrentUser());
+
   const profileRef = await addDoc(
-    collectionRef(`${USER_COLLECTION}/${uid}/profiles`),
+    collectionRef(`${USER_COLLECTION.path}/${uid}/profiles`),
     /** @type {Profile} */
     {
       name: "New Profile",

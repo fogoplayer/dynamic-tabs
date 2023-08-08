@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
 import { authStateChanged, emailAndPasswordSignUp } from "../services/auth.mjs";
+import { createUserData } from "../services/daos/UserDAO.mjs";
 // import {
 //   createUserData,
 //   getUserByUsername,
@@ -38,9 +39,9 @@ export default class SignUp extends LitElement {
       e.preventDefault();
 
       await emailAndPasswordSignUp(this.email.trim(), this.password.trim());
-      authStateChanged((user) => {
+      authStateChanged(async (user) => {
         if (!user) throw new Error("There was an issue signing up");
-        // createUserData(user, this.username.trim());
+        await createUserData(user.uid);
         page(this.query.redirect ?? "/");
       });
     } catch (e) {

@@ -5,14 +5,13 @@
  * @template T
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
-import { addDoc, updateDoc } from "firebase/firestore";
+import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
 import { collectionRef, docRef, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { PROFILES_COLLECTION } from "./ProfileDAO.mjs";
 import { createWindow } from "./WindowDAO.mjs";
 
-const { uid } = /** @type {User} */ (getCurrentUser());
 export const SESSIONS_COLLECTION = "sessions";
 
 /**
@@ -40,8 +39,8 @@ export async function createSession(profileRef) {
     icon: "",
     windows: [],
   });
-  updateSession(profileRef, {
-    windows: push(await createWindow(profileRef)),
+  updateSession(sessionRef, {
+    windows: push(await createWindow(sessionRef)),
   });
   return sessionRef;
 }
