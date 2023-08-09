@@ -15,6 +15,7 @@ export const PROFILES_COLLECTION = "profiles";
 /**
  * @typedef {{
  *  tag: string;
+ *  label: string;
  *  position: "top" | "bottom" | "left" | "right" | "none";
  *  mode: "hidden" | "expanding" | "minimized" | "visible";
  *  [key: string]: unknown | undefined

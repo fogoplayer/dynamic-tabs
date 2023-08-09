@@ -18,9 +18,9 @@ export default class Home extends LitElement {
 
   render() {
     // Render layers dynamically in order
-    const [{ element: topLayer, settings }, ...others] = this.widgets;
-    let renderRoot = /** @type {WidgetLayer} */ (document.createElement(topLayer));
-    renderRoot.settings = settings;
+    const [topLayer, ...others] = this.widgets;
+    let renderRoot = /** @type {WidgetLayer} */ (document.createElement(topLayer.tag));
+    renderRoot.settings = topLayer;
     renderRoot.index = 0;
 
     // collapse array into a bunch of nested layer elements
@@ -33,11 +33,10 @@ export default class Home extends LitElement {
        * @returns {WidgetLayer}
        */
       (prevLayer, currLayer, index) => {
-        const { element, settings } = currLayer;
-        prevLayer.innerHTML += document.createElement(element).outerHTML;
+        prevLayer.innerHTML += document.createElement(currLayer.tag).outerHTML;
 
         /** @type {WidgetLayer} */
-        (prevLayer.lastElementChild).settings = settings;
+        (prevLayer.lastElementChild).settings = currLayer;
         /** @type {WidgetLayer} */
         (prevLayer.lastElementChild).index = index;
 

@@ -1,3 +1,4 @@
+/** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import { createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
@@ -9,10 +10,11 @@ export default class IframesWidget extends WidgetLayer {
   constructor() {
     super();
     this.settings = {
-      /** @type {WidgetLayer["settings"]["position"]} */
+      tag: "iframes-widget",
+      label: "App Bar",
+      /** @type {WidgetSettingSchema["position"]} */
       position: "right",
-
-      /** @type {WidgetLayer["settings"]["mode"]} */
+      /** @type {WidgetSettingSchema["mode"]} */
       mode: "visible",
 
       /** @type {string[]} */

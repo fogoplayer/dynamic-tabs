@@ -19,12 +19,13 @@ const settings = {
   widgets: [
     {
       tag: "iframes-widget",
+      label: "App Bar",
       position: "right",
       mode: "visible",
       frames: ["https://zarinloosli.com", "https://chromeunboxed.com"],
     },
-    { tag: "sessions-widget", position: "left", mode: "visible" },
-    { tag: "tabs-widget", position: "top", mode: "visible" },
+    { tag: "sessions-widget", label: "Sessions", position: "left", mode: "visible" },
+    { tag: "tabs-widget", label: "Tabs", position: "top", mode: "visible" },
   ],
   /** @type {"ios" | "md"} */
   mode: "ios",

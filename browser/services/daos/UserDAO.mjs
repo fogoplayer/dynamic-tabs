@@ -40,17 +40,18 @@ export async function createUserData() {
   const { uid } = /** @type {User} */ (getCurrentUser());
 
   const userDocRef = docRef(USER_COLLECTION, uid);
-  
+
   const [initialProfile, ...initialWidgets] = await Promise.all([
     createProfile(),
     createWidget({
       tag: "iframes-widget",
+      label: "iframes",
       position: "right",
     }),
-    createWidget({ tag: "sessions-widget", position: "left" }),
-    createWidget({ tag: "tabs-widget", position: "top" }),
+    createWidget({ tag: "sessions-widget", label: "sessions", position: "left" }),
+    createWidget({ tag: "tabs-widget", label: "tabs", position: "top" }),
   ]);
-
+  debugger;
   await setDoc(
     userDocRef,
     /** @type {UserSchema} */
