@@ -27,7 +27,6 @@ export default class IframesWidget extends WidgetLayer {
       const newFrameSettings = this.settings.frames;
       const oldFrameSettings = /** @type {IframesWidget["settings"]} */ (diff.get("settings"))?.frames;
       // TODO this doesn't respect deletion
-      debugger;
       if (oldFrameSettings?.length !== newFrameSettings?.length) {
         // TODO check if the modal is open first
         /** @type {HTMLInputElement} */

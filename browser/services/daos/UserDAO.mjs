@@ -1,6 +1,13 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
-import { collectionRef, docRef, setDoc } from "../firestore.mjs";
+/** @typedef {import("../../libs/firebase/9.7.0/firebase-auth.js").User} User */
+/**
+ * @template T
+ * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
+ */
+import { getCurrentUser } from "../auth.mjs";
+import { collectionRef, docRef, prefixObjectKeysForNestedUpdate, setDoc, updateDoc } from "../firestore.mjs";
 import { createProfile } from "./ProfileDAO.mjs";
+import { createWidget } from "./WidgetDAO.mjs";
 
 export const USER_COLLECTION = collectionRef("users");
 
@@ -29,21 +36,30 @@ export const USER_COLLECTION = collectionRef("users");
  * }} UserSettings
  */
 
-/**
- *
- * @param {string} uid
- */
-export async function createUserData(uid) {
+export async function createUserData() {
+  const { uid } = /** @type {User} */ (getCurrentUser());
+
   const userDocRef = docRef(USER_COLLECTION, uid);
+  
+  const [initialProfile, ...initialWidgets] = await Promise.all([
+    createProfile(),
+    createWidget({
+      tag: "iframes-widget",
+      position: "right",
+    }),
+    createWidget({ tag: "sessions-widget", position: "left" }),
+    createWidget({ tag: "tabs-widget", position: "top" }),
+  ]);
+
   await setDoc(
     userDocRef,
     /** @type {UserSchema} */
     {
-      profiles: [await createProfile()],
+      profiles: [initialProfile],
       autocompleteHistory: [],
       /** @type {UserSettings} */
       settings: {
-        widgets: [],
+        widgets: initialWidgets,
         encryptData: false,
         mode: "default",
         keyboardShortcuts: {},
@@ -51,4 +67,15 @@ export async function createUserData(uid) {
       },
     }
   );
+}
+
+/**
+ * @param {Partial<WithFieldValue<UserSettings>>} settingsDict
+ */
+export async function updateUserSetting(settingsDict) {
+  const { uid } = /** @type {User} */ (getCurrentUser());
+  const userDocRef = docRef(USER_COLLECTION, uid);
+
+  settingsDict = prefixObjectKeysForNestedUpdate("settings.", settingsDict);
+  return await updateDoc(userDocRef, settingsDict);
 }

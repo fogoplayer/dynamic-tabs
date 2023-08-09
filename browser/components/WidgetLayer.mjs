@@ -1,4 +1,5 @@
 /** @typedef {import("../libs/lit-all@2.7.6.js").Ref} Ref */
+/** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
 import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
@@ -32,14 +33,8 @@ export default class WidgetLayer extends LitElement {
 
     getUserSettings(
       ({ widgets }) =>
-        /**
-         * @type {{
-         *  position: "top" | "bottom" | "left" | "right" | "none";
-         *  mode: "hidden" | "expanding" | "minimized" | "visible";
-         *  [key: string]: unknown | undefined
-         * }}
-         */
-        (this.settings = widgets[this.index]?.settings)
+        /** @type {WidgetSettingSchema} */
+        (this.settings = widgets[this.index])
     );
 
     /** @type {number} */
@@ -66,7 +61,7 @@ export default class WidgetLayer extends LitElement {
     }
 
     if (diff.has("index")) {
-      this.settings = getUserSettings().widgets[this.index].settings;
+      this.settings = getUserSettings().widgets[this.index];
     }
   }
 
@@ -113,7 +108,7 @@ export default class WidgetLayer extends LitElement {
   updateWidgetSetting(setting, value) {
     let { widgets } = getUserSettings();
     if (widgets[this.index].settings) {
-      widgets[this.index].settings[setting] = value;
+      widgets[this.index][setting] = value;
     }
     updateSetting("widgets", [...widgets]);
   }

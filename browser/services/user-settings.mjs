@@ -1,4 +1,5 @@
 /** @typedef {import("../components/WidgetLayer.mjs").default} WidgetLayer */
+/** @typedef {import("./daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import IframesWidget from "../components/IframesWidget.mjs";
 import SessionsWidget from "../components/SessionsWidget.mjs";
 import TabsWidget from "../components/TabsWidget.mjs";
@@ -14,23 +15,16 @@ const observers = new Set();
  * @typedef {typeof settings} UserSettings
  */
 const settings = {
-  /**
-   * @type {{
-   *  element: string;
-   *  settings: WidgetLayer["settings"];
-   * }[]}
-   */
+  /** @type {WidgetSettingSchema[]} */
   widgets: [
     {
-      element: "iframes-widget",
-      settings: {
-        position: "right",
-        mode: "visible",
-        frames: ["https://zarinloosli.com", "https://chromeunboxed.com"],
-      },
+      tag: "iframes-widget",
+      position: "right",
+      mode: "visible",
+      frames: ["https://zarinloosli.com", "https://chromeunboxed.com"],
     },
-    { element: "sessions-widget", settings: { position: "left", mode: "visible" } },
-    { element: "tabs-widget", settings: { position: "top", mode: "visible" } },
+    { tag: "sessions-widget", position: "left", mode: "visible" },
+    { tag: "tabs-widget", position: "top", mode: "visible" },
   ],
   /** @type {"ios" | "md"} */
   mode: "ios",

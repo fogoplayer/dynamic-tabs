@@ -16,6 +16,7 @@ import {
   onSnapshot,
   query,
   setDoc,
+  updateDoc as libUpdateDoc,
 } from "../libs/firebase/9.7.0/firebase-firestore.js";
 import firebaseApp from "./firebase-app.mjs";
 export { where, addDoc, setDoc } from "../libs/firebase/9.7.0/firebase-firestore.js";
@@ -147,6 +148,27 @@ export function createDoc(data, collectionReference, docName) {
 
   if (docName) return setDoc(doc(collectionReference, docName), data);
   else return addDoc(collectionReference, data);
+}
+
+/**
+ *
+ * @param {DocumentReference} reference
+ * @param {any} data
+ * @returns {Promise<void>}
+ */
+export async function updateDoc(reference, data) {
+  return await libUpdateDoc(reference, data);
+}
+
+/**
+ *
+ * @param {string} prefix a string to prepend to the object keys
+ * @param {{[key:string]: unknown}} object
+ */
+export function prefixObjectKeysForNestedUpdate(prefix, object) {
+  let entries = Object.entries(object);
+  entries = entries.map(([key, value]) => [prefix + key, value]);
+  return Object.fromEntries(entries);
 }
 
 /**
