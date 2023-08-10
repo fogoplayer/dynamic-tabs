@@ -1,5 +1,5 @@
 import { LitElement, css, html } from "../libs/lit-all@2.7.6.js";
-import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
+import { watchUserSettings } from "../services/daos/UserDAO.mjs";
 
 export default class WebView extends LitElement {
   static properties = {
@@ -9,7 +9,7 @@ export default class WebView extends LitElement {
 
   constructor() {
     super();
-    getUserSettings(({ widgets, mode }) => {
+    watchUserSettings(({ widgets, mode }) => {
       this.widgets = widgets;
       this.mode = mode;
     });

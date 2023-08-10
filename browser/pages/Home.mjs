@@ -1,10 +1,10 @@
-/** @typedef {import("../services/user-settings.mjs").UserSettings} UserSettings */
+/** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 /** @typedef {import("../components/WidgetLayer.mjs").default} WidgetLayer */
 import { LitElement, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
-import { getUserSettings } from "../services/user-settings.mjs";
 
 import WebView from "../components/Webview.mjs";
+import { watchUserSettings } from "../services/daos/UserDAO.mjs";
 
 export default class Home extends LitElement {
   static properties = {
@@ -13,22 +13,24 @@ export default class Home extends LitElement {
 
   constructor() {
     super();
-    getUserSettings(({ widgets }) => (this.widgets = widgets));
+    watchUserSettings(({ widgets }) => (this.widgets = widgets));
   }
 
   render() {
+    console.log(this.widgets);
+    if (!this.widgets?.length) return new WebView();
+
     // Render layers dynamically in order
     const [topLayer, ...others] = this.widgets;
     let renderRoot = /** @type {WidgetLayer} */ (document.createElement(topLayer.tag));
-    renderRoot.settings = topLayer;
-    renderRoot.index = 0;
+    renderRoot.settingsRef = topLayer.ref;
 
     // collapse array into a bunch of nested layer elements
     const currentElement = others.reduce(
       /**
        *
        * @param {HTMLElement} prevLayer
-       * @param {UserSettings["widgets"][number]} currLayer
+       * @param {WidgetSettingSchema} currLayer
        * @param {number} index
        * @returns {WidgetLayer}
        */
@@ -36,9 +38,7 @@ export default class Home extends LitElement {
         prevLayer.innerHTML += document.createElement(currLayer.tag).outerHTML;
 
         /** @type {WidgetLayer} */
-        (prevLayer.lastElementChild).settings = currLayer;
-        /** @type {WidgetLayer} */
-        (prevLayer.lastElementChild).index = index;
+        (prevLayer.lastElementChild).settingsRef = currLayer.ref;
 
         return /** @type {WidgetLayer} */ (prevLayer.lastElementChild);
       },

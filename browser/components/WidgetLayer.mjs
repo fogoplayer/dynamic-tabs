@@ -1,19 +1,21 @@
 /** @typedef {import("../libs/lit-all@2.7.6.js").Ref} Ref */
+/** @typedef {import("../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
-import { getUserSettings, updateSetting } from "../services/user-settings.mjs";
+import { watchUserSettings } from "../services/daos/UserDAO.mjs";
+import { watchDocData } from "../services/firestore.mjs";
 
 /** @abstract */
 export default class WidgetLayer extends LitElement {
   static properties = {
-    position: { type: String, reflect: true },
+    settingsRef: { type: Object },
     settings: {
       type: Object,
       reflect: true,
       /**
-       * @param {WidgetLayer["settings"]} newVal
-       * @param {WidgetLayer["settings"]} oldVal
+       * @param {WidgetSettingSchema} newVal
+       * @param {WidgetSettingSchema} oldVal
        */
       hasChanged(newVal, oldVal) {
         return !(JSON.stringify(newVal) === JSON.stringify(oldVal));
@@ -28,41 +30,13 @@ export default class WidgetLayer extends LitElement {
 
   constructor() {
     super();
-    /** @type {"top" | "bottom" | "left" | "right" | "none"} */
-    this.position;
-
-    getUserSettings(
-      ({ widgets }) =>
-        /** @type {WidgetSettingSchema} */
-        (this.settings = widgets[this.index])
-    );
-
-    /** @type {number} */
-    this.index;
+    /** @type {DocumentReference} */
+    this.settingsRef;
   }
 
-  /** @param {UpdatedDiff} diff */
+  /** @param {UpdatedDiff} diff  */
   updated(diff) {
-    // console.log("Widget:", this.label, this.settings, diff.get("settings"));
-
-    if (diff.has("settings")) {
-      const oldSettings = /** @type {WidgetLayer["settings"]} */ (diff.get("settings"));
-      if (this.settings && this.settings?.position !== oldSettings?.position) {
-        this.classList.remove("top", "bottom", "left", "right", "none");
-        this.classList.add(this.settings.position);
-
-        this.classList.remove("inline", "block");
-        if (this.settings.position === "top" || this.settings.position === "bottom") {
-          this.classList.add("block");
-        } else {
-          this.classList.add("inline");
-        }
-      }
-    }
-
-    if (diff.has("index")) {
-      this.settings = getUserSettings().widgets[this.index];
-    }
+    if (diff.has("ref")) watchDocData(this.settingsRef, (settingsRef) => (this.settings = settingsRef));
   }
 
   render() {
@@ -106,11 +80,11 @@ export default class WidgetLayer extends LitElement {
    * @param {unknown} value
    */
   updateWidgetSetting(setting, value) {
-    let { widgets } = getUserSettings();
-    if (widgets[this.index].settings) {
-      widgets[this.index][setting] = value;
-    }
-    updateSetting("widgets", [...widgets]);
+    // let { widgets } = getUserSettings();
+    // if (widgets[this.index].settings) {
+    //   widgets[this.index][setting] = value;
+    // }
+    // updateSetting("widgets", [...widgets]);
   }
 
   static styles = [

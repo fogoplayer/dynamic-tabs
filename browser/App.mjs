@@ -3,12 +3,12 @@ import { css, LitElement } from "./libs/lit-all@2.7.6.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
-import { getUserSettings } from "./services/user-settings.mjs";
 
 import Home from "./pages/Home.mjs";
 import SignUp from "./pages/SignUp.mjs";
 import LogIn from "./pages/LogIn.mjs";
 import ForgotPassword from "./pages/ForgotPassword.mjs";
+import { watchUserSettings } from "./services/daos/UserDAO.mjs";
 
 // Add global styles to head for resets and fonts
 const style = document.createElement("style");
@@ -16,7 +16,7 @@ style.textContent = globalCss.cssText;
 document.head.appendChild(style);
 
 // Config Ionic
-getUserSettings(({ mode }) => {
+watchUserSettings(({ mode }) => {
   window.Ionic = {
     config: { mode },
   };

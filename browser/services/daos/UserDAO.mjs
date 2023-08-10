@@ -107,17 +107,21 @@ export async function updateUserSetting(settingsDict) {
   return await updateDoc(userDocRef, settingsDict);
 }
 
-/** @param {(data: any) => void} callback  */
-export async function watchUserData(callback) {
-  authStateChanged(() => {
-    if (!getCurrentUser()) return;
+/**
+ *
+ * @param {(data: UserSettingsData) => void} callback
+ */
+export async function watchUserSettings(callback) {
+  authStateChanged((userData) => {
     const { uid } = /** @type {User} */ (getCurrentUser());
-    watchDocData(docRef(USER_COLLECTION, uid), async ({ userData }) => {
-      debugger;
-      userData.settings.widgets = await Promise.all(
-        userData.settings.widgets.map((widgetRef) => getDocData(widgetRef))
+    watchDocData(docRef(USER_COLLECTION, uid), async (/** @type {UserSchema} */ userData) => {
+      // @ts-ignore
+      const userSettings = /** @type {UserSettingsData} */ (
+        Object.assign(userData.settings, {
+          widgets: await Promise.all(userData.settings.widgets.map(async (widgetRef) => await getDocData(widgetRef))),
+        })
       );
-      callback(userData);
+      callback(userSettings);
     });
   });
 }
