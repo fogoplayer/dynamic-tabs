@@ -6,12 +6,14 @@
  * @typedef {import("firebase/auth").User} User
  */
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   EmailAuthProvider,
   getAuth,
   linkWithCredential,
   onAuthStateChanged,
   sendPasswordResetEmail as sendResetPasswordEmail,
+  setPersistence,
   signInAnonymously,
   signInWithEmailAndPassword,
   signOut,
@@ -51,6 +53,7 @@ export function authStateChanged(callback) {
  * @param {string} password
  */
 export async function emailAndPasswordLogIn(email, password) {
+  await setPersistence(auth, browserLocalPersistence);
   await signInWithEmailAndPassword(auth, email, password);
 }
 

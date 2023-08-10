@@ -1,11 +1,20 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-auth.js").User} User */
+/** @typedef {import("./WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 /**
  * @template T
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
-import { getCurrentUser } from "../auth.mjs";
-import { collectionRef, docRef, prefixObjectKeysForNestedUpdate, setDoc, updateDoc } from "../firestore.mjs";
+import { authStateChanged, getCurrentUser } from "../auth.mjs";
+import {
+  collectionRef,
+  docRef,
+  getDocData,
+  prefixObjectKeysForNestedUpdate,
+  setDoc,
+  updateDoc,
+  watchDocData,
+} from "../firestore.mjs";
 import { createProfile } from "./ProfileDAO.mjs";
 import { createWidget } from "./WidgetDAO.mjs";
 
@@ -13,7 +22,7 @@ export const USER_COLLECTION = collectionRef("users");
 
 /**
  * @typedef {{
- *  settings: UserSettings;
+ *  settings: UserSettingsSchema;
  *  profiles: DocumentReference[];
  *  autocompleteHistory: DocumentReference[];
  * }} UserSchema
@@ -33,7 +42,24 @@ export const USER_COLLECTION = collectionRef("users");
  *    }
  *  }
  *  mirrorHistoryToBrowser: boolean
- * }} UserSettings
+ * }} UserSettingsSchema
+ */
+
+/**
+ * @typedef {{
+ *  widgets: WidgetSettingSchema[];
+ *  encryptData: boolean;
+ *  mode: "ios" | "md" | "default"
+ *  keyboardShortcuts: {
+ *    [key: string]: {
+ *      ctrl: boolean;
+ *      alt: boolean;
+ *      shift: boolean;
+ *      action: string;
+ *    }
+ *  }
+ *  mirrorHistoryToBrowser: boolean
+ * }} UserSettingsData
  */
 
 export async function createUserData() {
@@ -58,7 +84,7 @@ export async function createUserData() {
     {
       profiles: [initialProfile],
       autocompleteHistory: [],
-      /** @type {UserSettings} */
+      /** @type {UserSettingsSchema} */
       settings: {
         widgets: initialWidgets,
         encryptData: false,
@@ -71,7 +97,7 @@ export async function createUserData() {
 }
 
 /**
- * @param {Partial<WithFieldValue<UserSettings>>} settingsDict
+ * @param {Partial<WithFieldValue<UserSettingsSchema>>} settingsDict
  */
 export async function updateUserSetting(settingsDict) {
   const { uid } = /** @type {User} */ (getCurrentUser());
@@ -79,4 +105,19 @@ export async function updateUserSetting(settingsDict) {
 
   settingsDict = prefixObjectKeysForNestedUpdate("settings.", settingsDict);
   return await updateDoc(userDocRef, settingsDict);
+}
+
+/** @param {(data: any) => void} callback  */
+export async function watchUserData(callback) {
+  authStateChanged(() => {
+    if (!getCurrentUser()) return;
+    const { uid } = /** @type {User} */ (getCurrentUser());
+    watchDocData(docRef(USER_COLLECTION, uid), async ({ userData }) => {
+      debugger;
+      userData.settings.widgets = await Promise.all(
+        userData.settings.widgets.map((widgetRef) => getDocData(widgetRef))
+      );
+      callback(userData);
+    });
+  });
 }
