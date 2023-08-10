@@ -9,24 +9,15 @@ export default class IframesWidget extends WidgetLayer {
 
   constructor() {
     super();
-    this.settings = {
-      tag: "iframes-widget",
-      label: "App Bar",
-      /** @type {WidgetSettingSchema["position"]} */
-      position: "right",
-      /** @type {WidgetSettingSchema["mode"]} */
-      mode: "visible",
-
-      /** @type {string[]} */
-      frames: [],
-    };
+    /** @type {WidgetSettingSchema & { frames: string[]} | undefined} */
+    this.settings;
   }
 
   /** @param {UpdatedDiff} diff  */
   updated(diff) {
     super.updated(diff);
     if (diff.has("settings")) {
-      const newFrameSettings = this.settings.frames;
+      const newFrameSettings = this.settings?.frames;
       const oldFrameSettings = /** @type {IframesWidget["settings"]} */ (diff.get("settings"))?.frames;
       // TODO this doesn't respect deletion
       if (oldFrameSettings?.length !== newFrameSettings?.length) {
@@ -38,6 +29,7 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   widget() {
+    console.log("settings:", this.settings);
     this.showSettings();
 
     return html`<section>
@@ -71,7 +63,7 @@ export default class IframesWidget extends WidgetLayer {
       <ion-content class="ion-padding">
         <h2>Apps</h2>
         <ion-list>
-          ${this.settings.frames.map(
+          ${this.settings?.frames.map(
             (frame, i) => html`
               <ion-item>
                 <ion-input label="App ${i + 1}" type="url" ${ref(this.lastFrameInput)} value=${frame}></ion-input>
@@ -83,11 +75,11 @@ export default class IframesWidget extends WidgetLayer {
               label="Add An App"
               type="url"
               @ionInput=${async () => {
-                this.updateWidgetSetting("frames", [...this.settings.frames, "Test"]);
+                this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
                 this.requestUpdate();
               }}
               @ionFocus=${async () => {
-                this.updateWidgetSetting("frames", [...this.settings.frames, "Test"]);
+                this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
                 this.requestUpdate();
               }}
             ></ion-input>

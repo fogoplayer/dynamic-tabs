@@ -73,11 +73,11 @@ export async function createUserData() {
       tag: "iframes-widget",
       label: "iframes",
       position: "right",
+      frames: [],
     }),
     createWidget({ tag: "sessions-widget", label: "sessions", position: "left" }),
     createWidget({ tag: "tabs-widget", label: "tabs", position: "top" }),
   ]);
-  debugger;
   await setDoc(
     userDocRef,
     /** @type {UserSchema} */

@@ -2,6 +2,9 @@
 /** @typedef {import("../components/WidgetLayer.mjs").default} WidgetLayer */
 import { LitElement, css } from "../libs/lit-all@2.7.6.js";
 import globalCss from "../global-styles/global.css.mjs";
+import "../components/IframesWidget.mjs";
+import "../components/SessionsWidget.mjs";
+import "../components/TabsWidget.mjs";
 
 import WebView from "../components/Webview.mjs";
 import { watchUserSettings } from "../services/daos/UserDAO.mjs";

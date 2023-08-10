@@ -22,7 +22,7 @@ export default class WebView extends LitElement {
         <!-- <iframe src="" frameborder="0"></iframe> -->
         <div class="center">
           <ion-list inset="true">
-            ${this.widgets.map(
+            ${this.widgets?.map(
               (panel, i) =>
                 html`<ion-item inset="true" lines="inset">
                   <ion-select

@@ -3,7 +3,6 @@
 /** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
-import { watchUserSettings } from "../services/daos/UserDAO.mjs";
 import { watchDocData } from "../services/firestore.mjs";
 
 /** @abstract */
