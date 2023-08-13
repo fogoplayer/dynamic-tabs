@@ -36,12 +36,16 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   widget() {
-    console.log(this.selectedFrame);
     return html`<section>
       <nav>
-        <ion-segment value="${this.selectedFrame}">
+        <ion-segment
+          @ionChange=${(e) => {
+            console.log(e.target.value);
+            this.selectedFrame = parseInt(e.target.value);
+          }}
+        >
           ${this.settings?.frames.map((frame, i) => {
-            return html`<ion-segment-button value=${i} @ionClick=${() => (this.selectedFrame = i)}>
+            return html`<ion-segment-button value=${i}>
               <ion-label>
                 <img src="${frame}/favicon.ico" alt="The site icon of ${frame}" class="frame-icon" />
               </ion-label>
@@ -52,8 +56,14 @@ export default class IframesWidget extends WidgetLayer {
           <ion-icon name="settings-outline"></ion-icon>
         </ion-button>
       </nav>
-
-      <iframe src="${this.settings?.frames[0]}" frameborder="0"></iframe>
+      ${this.settings?.frames.map((frame, i) => {
+        console.log(this.selectedFrame, i, this.selectedFrame === i ? "block" : "none");
+        return html`<iframe
+          src="${frame}"
+          style="display: ${this.selectedFrame === i ? "block" : "none"}"
+          frameborder="0"
+        ></iframe>`;
+      })}
     </section>`;
   }
 
