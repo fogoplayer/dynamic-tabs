@@ -177,10 +177,12 @@ export default class WidgetLayer extends LitElement {
         flex-wrap: nowrap;
 
         position: relative;
+        isolation: isolate;
       }
 
       :host ::slotted(*) {
         flex: 1;
+        z-index: -1;
       }
 
       :host > :first-child {
@@ -205,7 +207,7 @@ export default class WidgetLayer extends LitElement {
       }
 
       .drag-handle {
-        --handle-size: 0.25rem;
+        --handle-size: 0.5rem;
         flex-basis: var(--handle-size);
         background-color: transparent;
         position: relative;
