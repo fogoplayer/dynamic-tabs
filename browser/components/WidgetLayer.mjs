@@ -38,7 +38,6 @@ export default class WidgetLayer extends LitElement {
 
   /** @param {UpdatedDiff} diff  */
   updated(diff) {
-    console.log(diff);
     if (diff.has("settingsRef")) {
       watchDocData(this.settingsRef, (settingsData) => (this.settings = settingsData));
     }

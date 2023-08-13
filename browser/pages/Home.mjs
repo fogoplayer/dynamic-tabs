@@ -20,8 +20,7 @@ export default class Home extends LitElement {
   }
 
   render() {
-    console.log(this.widgets);
-    if (!this.widgets?.length) return new WebView();
+\    if (!this.widgets?.length) return new WebView();
 
     // Render layers dynamically in order
     const [topLayer, ...others] = this.widgets;
