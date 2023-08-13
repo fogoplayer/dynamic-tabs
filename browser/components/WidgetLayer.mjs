@@ -117,6 +117,8 @@ export default class WidgetLayer extends LitElement {
     let panelStat;
     /** @type {"pageX" | "pageY"} */
     let eventStat;
+    /** @type {1 | -1} */
+    let inversionFactor;
 
     if (this.classList.contains("inline")) {
       panelStat = "clientWidth";
@@ -126,14 +128,19 @@ export default class WidgetLayer extends LitElement {
       eventStat = "pageY";
     }
 
+    if (this.classList.contains("right") || this.classList.contains("bottom")) {
+      inversionFactor = -1;
+    } else {
+      inversionFactor = 1;
+    }
+
     const initialBasis = pane[panelStat] / 16;
     let dragStart = event[eventStat];
 
     /** @param {MouseEvent} event */
     function drag(event) {
       event.preventDefault();
-
-      pane.style.flexBasis = initialBasis + (event[eventStat] - dragStart) / 16 + "rem";
+      pane.style.flexBasis = initialBasis + (inversionFactor * (event[eventStat] - dragStart)) / 16 + "rem";
     }
 
     function mouseup() {
