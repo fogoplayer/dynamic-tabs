@@ -34,12 +34,13 @@ export default class IframesWidget extends WidgetLayer {
     return html`<section>
       <nav>
         <ion-segment value="default">
-          <ion-segment-button value="default">
-            <ion-label>Default</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="segment">
-            <ion-label>Segment</ion-label>
-          </ion-segment-button>
+          ${this.settings?.frames.map((frame) => {
+            return html`<ion-segment-button value="default">
+              <ion-label
+                ><img src="${frame}/favicon.ico" alt="The site icon of ${frame}" class="frame-icon"
+              /></ion-label>
+            </ion-segment-button> `;
+          })}
         </ion-segment>
         <ion-button fill="clear" @click=${this.showSettings}>
           <ion-icon name="settings-outline"></ion-icon>
@@ -149,6 +150,11 @@ export default class IframesWidget extends WidgetLayer {
 
       :host(.block) nav {
         flex-direction: row;
+      }
+
+      .frame-icon {
+        width: 1em;
+        height: 1em;
       }
     `,
   ];
