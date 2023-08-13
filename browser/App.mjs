@@ -15,6 +15,11 @@ const style = document.createElement("style");
 style.textContent = globalCss.cssText;
 document.head.appendChild(style);
 
+window.Ionic = {
+  config: { mode: "ios" },
+  // config: { mode: "md" },
+};
+
 // Config Ionic
 watchUserSettings(({ mode }) => {
   window.Ionic = {

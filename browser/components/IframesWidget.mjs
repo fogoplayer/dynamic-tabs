@@ -3,6 +3,11 @@ import { createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
 import WidgetLayer from "./WidgetLayer.mjs";
 
 export default class IframesWidget extends WidgetLayer {
+  static properties = {
+    ...WidgetLayer.properties,
+    selectedFrame: { type: Number, reflect: true },
+  };
+
   label = "App Panel";
 
   lastFrameInput = createRef();
@@ -11,6 +16,8 @@ export default class IframesWidget extends WidgetLayer {
     super();
     /** @type {WidgetSettingSchema & { frames: string[]} | undefined} */
     this.settings;
+    /** @type {Number} */
+    this.selectedFrame;
   }
 
   /** @param {UpdatedDiff} diff  */
@@ -29,14 +36,15 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   widget() {
+    console.log(this.selectedFrame);
     return html`<section>
       <nav>
-        <ion-segment value="default">
-          ${this.settings?.frames.map((frame) => {
-            return html`<ion-segment-button value="default">
-              <ion-label
-                ><img src="${frame}/favicon.ico" alt="The site icon of ${frame}" class="frame-icon"
-              /></ion-label>
+        <ion-segment value="${this.selectedFrame}">
+          ${this.settings?.frames.map((frame, i) => {
+            return html`<ion-segment-button value=${i} @ionClick=${() => (this.selectedFrame = i)}>
+              <ion-label>
+                <img src="${frame}/favicon.ico" alt="The site icon of ${frame}" class="frame-icon" />
+              </ion-label>
             </ion-segment-button> `;
           })}
         </ion-segment>
@@ -148,6 +156,10 @@ export default class IframesWidget extends WidgetLayer {
 
       :host(.block) nav {
         flex-direction: row;
+      }
+
+      ion-segment-button {
+        min-width: 2em;
       }
 
       .frame-icon {
