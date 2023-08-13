@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "../libs/lit-all@2.7.6.js";
-import { watchUserSettings } from "../services/daos/UserDAO.mjs";
+import { updateUserSetting, watchUserSettings } from "../services/daos/UserDAO.mjs";
+import { updateWidget } from "../services/daos/WidgetDAO.mjs";
 
 export default class WebView extends LitElement {
   static properties = {
@@ -31,9 +32,7 @@ export default class WebView extends LitElement {
                     interface="popover"
                     value="${panel.position}"
                     @ionChange=${async (e) => {
-                      console.log(e);
-                      this.widgets[i].position = e.detail.value;
-                      updateSetting("widgets", [...this.widgets]);
+                      updateWidget(this.widgets[i].ref, { position: e.target.value });
                     }}
                   >
                     ${this.dropdownOptions()}
@@ -49,7 +48,7 @@ export default class WebView extends LitElement {
                 @ionChange=${async (e) => {
                   console.log(e);
                   this.mode = e.detail.value;
-                  updateSetting("mode", this.mode);
+                  updateUserSetting({ mode: this.mode });
                   document.documentElement.classList.toggle("ios");
                 }}
               >
