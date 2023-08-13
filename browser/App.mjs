@@ -29,7 +29,7 @@ export default class App extends LitElement {
 
   constructor() {
     super();
-    page.base("/browser");
+    // page.base("/browser");
     this.createRoute("/", Home);
     this.createRoute("/log-in", LogIn);
     this.createRoute("/sign-up", SignUp);
