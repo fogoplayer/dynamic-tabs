@@ -3,6 +3,7 @@
 /** @typedef {import("../services/daos/WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
 import globalCss from "../global-styles/global.css.mjs";
 import { LitElement, createRef, css, html, ref } from "../libs/lit-all@2.7.6.js";
+import { updateWidget } from "../services/daos/WidgetDAO.mjs";
 import { watchDocData } from "../services/firestore.mjs";
 
 /** @abstract */
@@ -31,7 +32,7 @@ export default class WidgetLayer extends LitElement {
     super();
     /** @type {DocumentReference} */
     this.settingsRef;
-    /** @type {WidgetSettingSchema & {frames: string[]}} */
+    /** @type {WidgetSettingSchema | undefined} */
     this.settings;
   }
 
@@ -41,11 +42,20 @@ export default class WidgetLayer extends LitElement {
     if (diff.has("settingsRef")) {
       watchDocData(this.settingsRef, (settingsData) => (this.settings = settingsData));
     }
-    if (diff.has("settings")) {
+
+    if (diff.has("settings") && this.settings) {
       const { label, mode, position, tag, frames } = this.settings;
       // position
-      this.classList.remove("top", "bottom", "left", "right", "none");
-      this.classList.add(this.settings.position);
+      if (
+        /** @type {WidgetSettingSchema | undefined} */
+        (diff.get("settings"))?.position !== position
+      ) {
+        this.classList.remove("top", "bottom", "left", "right", "none");
+        this.classList.add(position);
+        this.classList.remove("inline", "block");
+        if (position === "top" || position === "bottom") this.classList.add("block");
+        if (position === "left" || position === "right") this.classList.add("inline");
+      }
     }
   }
 
@@ -90,11 +100,7 @@ export default class WidgetLayer extends LitElement {
    * @param {unknown} value
    */
   updateWidgetSetting(setting, value) {
-    // let { widgets } = getUserSettings();
-    // if (widgets[this.index].settings) {
-    //   widgets[this.index][setting] = value;
-    // }
-    // updateSetting("widgets", [...widgets]);
+    updateWidget(this.settingsRef, { [setting]: value });
   }
 
   static styles = [
