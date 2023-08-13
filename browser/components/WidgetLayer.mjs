@@ -62,12 +62,14 @@ export default class WidgetLayer extends LitElement {
   }
 
   render() {
-    return html`
-      ${this.widget({ basis: `${this.settings?.basis}rem` })}
-      <div class="drag-handle" @mousedown=${this.resizeOnDrag}></div>
-      <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
-      <slot></slot>
-    `;
+    if (this.settings?.position !== "none")
+      return html`
+        ${this.widget({ basis: `${this.settings?.basis}rem` })}
+        <div class="drag-handle" @mousedown=${this.resizeOnDrag}></div>
+        <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
+        <slot></slot>
+      `;
+    return html`<slot></slot>`;
   }
 
   /////////////////////
@@ -173,6 +175,8 @@ export default class WidgetLayer extends LitElement {
       :host {
         display: flex;
         flex-wrap: nowrap;
+
+        position: relative;
       }
 
       :host ::slotted(*) {
@@ -201,11 +205,26 @@ export default class WidgetLayer extends LitElement {
       }
 
       .drag-handle {
-        flex-basis: 0.25em;
+        --handle-size: 0.25rem;
+        flex-basis: var(--handle-size);
+        background-color: transparent;
+        position: relative;
+      }
 
-        background-color: green;
+      .drag-handle:active {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+      }
 
+      :host(.inline) .drag-handle {
         cursor: col-resize;
+        margin-inline: calc(-1 * var(--handle-size) / 2);
+      }
+
+      :host(.block) .drag-handle {
+        cursor: row-resize;
+        margin-block: calc(-1 * var(--handle-size) / 2);
       }
     `,
   ];
