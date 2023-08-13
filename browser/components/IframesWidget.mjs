@@ -17,7 +17,7 @@ export default class IframesWidget extends WidgetLayer {
     /** @type {WidgetSettingSchema & { frames: string[]} | undefined} */
     this.settings;
     /** @type {Number} */
-    this.selectedFrame;
+    this.selectedFrame = 0;
   }
 
   /** @param {UpdatedDiff} diff  */
