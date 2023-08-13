@@ -29,8 +29,6 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   widget() {
-    this.showSettings();
-
     return html`<section>
       <nav>
         <ion-segment value="default">
