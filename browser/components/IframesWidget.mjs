@@ -46,7 +46,7 @@ export default class IframesWidget extends WidgetLayer {
         </ion-button>
       </nav>
 
-      <iframe src="https://zarinloosli.com" frameborder="0"></iframe>
+      <iframe src="${this.settings?.frames[0]}" frameborder="0"></iframe>
     </section>`;
   }
 
