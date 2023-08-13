@@ -8,6 +8,10 @@ import { watchDocData } from "../services/firestore.mjs";
 
 /** @abstract */
 export default class WidgetLayer extends LitElement {
+  /////////////////////
+  // Misc Properties //
+  /////////////////////
+
   static properties = {
     settingsRef: { type: Object },
     settings: {
@@ -60,10 +64,15 @@ export default class WidgetLayer extends LitElement {
   render() {
     return html`
       ${this.widget()}
+      <div class="drag-handle" @mousedown=${this.resizeOnDrag}></div>
       <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
       <slot></slot>
     `;
   }
+
+  /////////////////////
+  // Abstract UI API //
+  /////////////////////
 
   /**
    * The widget to be displayed alongside the slotted content.
@@ -83,6 +92,10 @@ export default class WidgetLayer extends LitElement {
     return html``;
   }
 
+  /////////////////////
+  // Utility Methods //
+  /////////////////////
+
   showSettings() {
     // @ts-ignore
     this.settingsModal.value?.present();
@@ -94,12 +107,55 @@ export default class WidgetLayer extends LitElement {
   }
 
   /**
+   * @param {HTMLMouseEvent} event
+   */
+  resizeOnDrag(event) {
+    const pane = /** @type {HTMLElement} */ (this.renderRoot.firstElementChild);
+    console.log(pane);
+
+    /** @type {"clientWidth" | "clientHeight"} */
+    let panelStat;
+    /** @type {"pageX" | "pageY"} */
+    let eventStat;
+
+    if (this.classList.contains("inline")) {
+      panelStat = "clientWidth";
+      eventStat = "pageX";
+    } else {
+      panelStat = "clientHeight";
+      eventStat = "pageY";
+    }
+
+    const initialBasis = pane[panelStat] / 16;
+    let dragStart = event[eventStat];
+
+    /** @param {MouseEvent} event */
+    function drag(event) {
+      event.preventDefault();
+
+      pane.style.flexBasis = initialBasis + (event[eventStat] - dragStart) / 16 + "rem";
+    }
+
+    function mouseup() {
+      document.removeEventListener("mousemove", drag);
+      document.removeEventListener("mouseup", mouseup);
+    }
+
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", mouseup);
+  }
+
+  /**
    * @param {string} setting
    * @param {unknown} value
    */
   updateWidgetSetting(setting, value) {
     updateWidget(this.settingsRef, { [setting]: value });
   }
+
+  ////////////
+  // Styles //
+  ////////////
 
   static styles = [
     globalCss,
@@ -134,9 +190,12 @@ export default class WidgetLayer extends LitElement {
         flex-direction: column-reverse;
       }
 
-      ion-list {
-        max-width: var(--limited-width);
-        margin-block: auto;
+      .drag-handle {
+        flex-basis: 0.25em;
+
+        background-color: green;
+
+        cursor: col-resize;
       }
     `,
   ];
