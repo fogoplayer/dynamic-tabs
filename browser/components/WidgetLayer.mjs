@@ -12,7 +12,6 @@ export default class WidgetLayer extends LitElement {
     settingsRef: { type: Object },
     settings: {
       type: Object,
-      reflect: true,
       /**
        * @param {WidgetSettingSchema} newVal
        * @param {WidgetSettingSchema} oldVal
