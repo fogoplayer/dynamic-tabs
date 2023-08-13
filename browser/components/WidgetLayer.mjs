@@ -31,11 +31,22 @@ export default class WidgetLayer extends LitElement {
     super();
     /** @type {DocumentReference} */
     this.settingsRef;
+    /** @type {WidgetSettingSchema & {frames: string[]}} */
+    this.settings;
   }
 
   /** @param {UpdatedDiff} diff  */
   updated(diff) {
-    if (diff.has("ref")) watchDocData(this.settingsRef, (settingsRef) => (this.settings = settingsRef));
+    console.log(diff);
+    if (diff.has("settingsRef")) {
+      watchDocData(this.settingsRef, (settingsData) => (this.settings = settingsData));
+    }
+    if (diff.has("settings")) {
+      const { label, mode, position, tag, frames } = this.settings;
+      // position
+      this.classList.remove("top", "bottom", "left", "right", "none");
+      this.classList.add(this.settings.position);
+    }
   }
 
   render() {
