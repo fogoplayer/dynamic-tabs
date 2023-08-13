@@ -29,7 +29,6 @@ export default class IframesWidget extends WidgetLayer {
   }
 
   widget() {
-    console.log("settings:", this.settings);
     this.showSettings();
 
     return html`<section>

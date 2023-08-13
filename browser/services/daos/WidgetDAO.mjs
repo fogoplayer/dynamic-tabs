@@ -35,10 +35,10 @@ export async function createWidget(settings) {
 
 /**
  *
- * @param {DocumentReference} profileRef
+ * @param {DocumentReference} widgetRef
  * @param {Partial<WithFieldValue<WidgetSettingSchema>>} data
  * @returns
  */
-export async function updateProfile(profileRef, data) {
-  return await updateDoc(profileRef, data);
+export async function updateWidget(widgetRef, data) {
+  return await updateDoc(widgetRef, data);
 }
