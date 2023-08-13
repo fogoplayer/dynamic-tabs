@@ -63,7 +63,7 @@ export default class WidgetLayer extends LitElement {
 
   render() {
     return html`
-      ${this.widget({ style: `flex-basis: ${this.settings?.basis}rem` })}
+      ${this.widget({ basis: `${this.settings?.basis}rem` })}
       <div class="drag-handle" @mousedown=${this.resizeOnDrag}></div>
       <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
       <slot></slot>
@@ -76,7 +76,7 @@ export default class WidgetLayer extends LitElement {
 
   /**
    * The widget to be displayed alongside the slotted content.
-   * @param {{style?: string}} props
+   * @param {{basis?: string}} props
    * @returns {ReturnType<html>}
    * @abstract
    */
