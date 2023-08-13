@@ -18,6 +18,7 @@ export const PROFILES_COLLECTION = "profiles";
  *  label: string;
  *  position: "top" | "bottom" | "left" | "right" | "none";
  *  mode: "hidden" | "expanding" | "minimized" | "visible";
+ *  basis: number;
  *  [key: string]: unknown | undefined
  * }} WidgetSettingSchema
  */

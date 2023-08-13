@@ -63,7 +63,7 @@ export default class WidgetLayer extends LitElement {
 
   render() {
     return html`
-      ${this.widget()}
+      ${this.widget({ style: `flex-basis: ${this.settings?.basis}rem` })}
       <div class="drag-handle" @mousedown=${this.resizeOnDrag}></div>
       <ion-modal ${ref(this.settingsModal)}> ${this.settingsPage()} </ion-modal>
       <slot></slot>
@@ -76,10 +76,11 @@ export default class WidgetLayer extends LitElement {
 
   /**
    * The widget to be displayed alongside the slotted content.
-   * @type {()=> ReturnType<html>} widget
+   * @param {{style?: string}} props
+   * @returns {ReturnType<html>}
    * @abstract
    */
-  widget() {
+  widget(props = {}) {
     throw new Error("WidgetLayer is an abstract class that must be extended to be implemented");
   }
 
@@ -138,15 +139,17 @@ export default class WidgetLayer extends LitElement {
     let dragStart = event[eventStat];
 
     /** @param {MouseEvent} event */
-    function drag(event) {
+    const drag = (event) => {
       event.preventDefault();
       pane.style.flexBasis = initialBasis + (inversionFactor * (event[eventStat] - dragStart)) / 16 + "rem";
-    }
+    };
 
-    function mouseup() {
+    const mouseup = () => {
       document.removeEventListener("mousemove", drag);
       document.removeEventListener("mouseup", mouseup);
-    }
+      console.log(pane.style.flexBasis);
+      this.updateWidgetSetting("basis", parseFloat(pane.style.flexBasis));
+    };
 
     document.addEventListener("mousemove", drag);
     document.addEventListener("mouseup", mouseup);

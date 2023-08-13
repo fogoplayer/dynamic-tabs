@@ -35,8 +35,8 @@ export default class IframesWidget extends WidgetLayer {
     }
   }
 
-  widget() {
-    return html`<section>
+  widget(props = {}) {
+    return html`<section style=${props.style || ""}>
       <nav>
         <ion-segment
           @ionChange=${(e) => {
@@ -129,7 +129,7 @@ export default class IframesWidget extends WidgetLayer {
       }
 
       section {
-        flex-basis: 30em;
+        flex-basis: fit-content;
 
         display: flex;
         flex-direction: inherit;
