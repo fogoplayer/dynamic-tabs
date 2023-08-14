@@ -188,6 +188,8 @@ export default class WidgetLayer extends LitElement {
       :host > :first-child {
         flex-grow: 0;
         flex-shrink: 0;
+
+        box-shadow: var(--box-shadow);
       }
 
       :host(.left) {
