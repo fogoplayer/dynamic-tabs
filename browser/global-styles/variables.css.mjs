@@ -16,5 +16,6 @@ export default css`
     --limited-width: 40rem;
     --_100dvh: 100dvh;
     --100dvh: var(--_100dvh, 100vh);
+    --collapse-animation-duration: 0.5s;
   }
 `;

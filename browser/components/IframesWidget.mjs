@@ -56,14 +56,16 @@ export default class IframesWidget extends WidgetLayer {
           <ion-icon name="settings-outline"></ion-icon>
         </ion-button>
       </nav>
-      ${this.settings?.frames.map((frame, i) => {
-        console.log(this.selectedFrame, i, this.selectedFrame === i ? "block" : "none");
-        return html`<iframe
-          src="${frame}"
-          style="display: ${this.selectedFrame === i ? "block" : "none"}"
-          frameborder="0"
-        ></iframe>`;
-      })}
+      <div class="frames">
+        ${this.settings?.frames.map((frame, i) => {
+          console.log(this.selectedFrame, i, this.selectedFrame === i ? "block" : "none");
+          return html`<iframe
+            src="${frame}"
+            style="display: ${this.selectedFrame === i ? "block" : "none"}"
+            frameborder="0"
+          ></iframe>`;
+        })}
+      </div>
     </section>`;
   }
 
@@ -124,6 +126,9 @@ export default class IframesWidget extends WidgetLayer {
   static styles = [
     ...WidgetLayer.styles,
     css`
+      /*//////////////////*/
+      /* General Styles */
+      /*//////////////////*/
       :host > :first-child {
         background-color: lightblue;
       }
@@ -156,9 +161,18 @@ export default class IframesWidget extends WidgetLayer {
         padding: 0.25em;
       }
 
-      section iframe {
-        flex: 1;
+      ion-segment-button {
+        min-width: 2em;
       }
+
+      .frame-icon {
+        width: 1em;
+        height: 1em;
+      }
+
+      /*///////////*/
+      /* Positions */
+      /*///////////*/
 
       :host(.inline) nav {
         flex-direction: column;
@@ -168,13 +182,32 @@ export default class IframesWidget extends WidgetLayer {
         flex-direction: row;
       }
 
-      ion-segment-button {
-        min-width: 2em;
+      /*///////*/
+      /* Modes */
+      /*///////*/
+
+      section .frames {
+        flex: 1;
+
+        display: grid;
+        grid-template-columns: 0fr;
+        grid-template-rows: 0fr;
+
+        overflow: hidden;
+
+        transition:
+          grid-template-columns var(--collapse-animation-duration),
+          grid-template-rows var(--collapse-animation-duration);
       }
 
-      .frame-icon {
-        width: 1em;
-        height: 1em;
+      section:hover .frames {
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+      }
+
+      section iframe {
+        min-width: 0;
+        min-height: 0;
       }
     `,
   ];
