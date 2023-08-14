@@ -58,6 +58,13 @@ export default class WidgetLayer extends LitElement {
         if (position === "top" || position === "bottom") this.classList.add("block");
         if (position === "left" || position === "right") this.classList.add("inline");
       }
+      if (
+        /** @type {WidgetSettingSchema | undefined} */
+        (diff.get("settings"))?.mode !== mode
+      ) {
+        this.classList.remove("hidden", "expanding", "minimized", "visible");
+        this.classList.add(mode);
+      }
     }
   }
 
