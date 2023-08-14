@@ -14,75 +14,55 @@ export default class TabsWidget extends WidgetLayer {
     super();
     /** @type {WidgetSettingSchema & { tabs: DocumentReference[]} | undefined} */
     this.settings;
-    /** @type {Number} */
-    this.selectedFrame = 0;
-  }
-
-  /** @param {UpdatedDiff} diff  */
-  updated(diff) {
-    super.updated(diff);
-    if (diff.has("settings")) {
-      const newFrameSettings = this.settings?.frames;
-      const oldFrameSettings = /** @type {IframesWidget["settings"]} */ (diff.get("settings"))?.frames;
-      // TODO this doesn't respect deletion
-      if (oldFrameSettings?.length !== newFrameSettings?.length) {
-        // TODO check if the modal is open first
-        /** @type {HTMLInputElement} */
-        (this.lastFrameInput.value)?.focus();
-      }
-    }
   }
 
   widget(props) {
     return html`<nav>
       <ion-segment
+        class="tab-bar"
+        value="0"
         @ionChange=${(e) => {
           console.log(e.target.value);
           this.selectedFrame = parseInt(e.target.value);
         }}
       >
-        ${this.settings?.tabs.map((frame, i) => {
-          return html`<ion-segment-button value=${i}>
-            <ion-label>
-              <img src="${frame}/favicon.ico" alt="The site icon of ${frame}" class="frame-icon" />
-            </ion-label>
-          </ion-segment-button> `;
-        })}
+        ${[
+          this.tab("https://music.youtube.com", 0, "Youtube Music"),
+          this.tab("https://app.shortwave.com", 1, "Shortwave"),
+        ]}
+        ${this.settings?.tabs?.length
+          ? this.settings?.tabs.map((tab, i) => {
+              return this.tab("tab", i);
+            })
+          : this.newTab()}
+        <ion-segment-button class="ntp" layout="icon-start">
+          <ion-icon name="add"></ion-icon>
+        </ion-segment-button>
       </ion-segment>
-      <ion-button fill="clear" @click=${this.showSettings}>
-        <ion-icon name="settings-outline"></ion-icon>
-      </ion-button>
     </nav>`;
   }
 
-  settingsPage() {
-    return html`<ion-header>
-        <ion-toolbar>
-          <ion-title>${this.label} Settings</ion-title>
-          <ion-buttons slot="primary">
-            <ion-button @click=${this.hideSettings}>Close</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <h2>Apps</h2>
-        <ion-list>
-          <ion-item>
-            <ion-input
-              label="Add An App"
-              type="url"
-              @ionInput=${async () => {
-                // this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
-                this.requestUpdate();
-              }}
-              @ionFocus=${async () => {
-                // this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
-                this.requestUpdate();
-              }}
-            ></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-content>`;
+  /**
+   * @param {string} url The URL being visited by the tab
+   * @param {number} index where the tab is at
+   * @param {string} name the tab title
+   * @param {string} icon an optional favicon override
+   * @returns {ReturnType<html>}
+   */
+  tab(url, index, name = "", icon = "") {
+    return html`<ion-segment-button class="tab" value=${index} layout="icon-start">
+      <ion-label
+        ><ion-avatar> <img src="${url}/favicon.ico" alt="The site icon of ${url}" class="frame-icon" /> </ion-avatar>
+        ${name || url}
+      </ion-label>
+    </ion-segment-button> `;
+  }
+
+  newTab() {
+    return html`<ion-segment-button value="${0}" layout="icon-start">
+      <ion-label> New Tab Page </ion-label>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-segment-button>`;
   }
 
   static styles = [
@@ -90,6 +70,28 @@ export default class TabsWidget extends WidgetLayer {
     css`
       :host > :first-child {
         background-color: pink;
+      }
+
+      .tab-bar {
+        display: flex;
+        justify-content: flex-start;
+        --background: transparent;
+      }
+
+      .tab ion-label {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.25em;
+        transition: grid-template-columns var(--collapse-animation-duration);
+      }
+
+      .tab :is(ion-icon, ion-avatar) {
+        width: 1em;
+        height: 1em;
+      }
+
+      .ntp {
+        min-width: fit-content;
       }
     `,
   ];
