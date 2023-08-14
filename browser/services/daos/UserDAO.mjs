@@ -33,6 +33,7 @@ export const USER_COLLECTION = collectionRef("users");
  *  widgets: DocumentReference[];
  *  encryptData: boolean;
  *  mode: "ios" | "md" | "default"
+ *  newTabPage: string;
  *  keyboardShortcuts: {
  *    [key: string]: {
  *      ctrl: boolean;
@@ -46,19 +47,8 @@ export const USER_COLLECTION = collectionRef("users");
  */
 
 /**
- * @typedef {{
+ * @typedef {Omit<UserSettingsSchema, "widgets"> & {
  *  widgets: WidgetSettingSchema[];
- *  encryptData: boolean;
- *  mode: "ios" | "md" | "default"
- *  keyboardShortcuts: {
- *    [key: string]: {
- *      ctrl: boolean;
- *      alt: boolean;
- *      shift: boolean;
- *      action: string;
- *    }
- *  }
- *  mirrorHistoryToBrowser: boolean
  * }} UserSettingsData
  */
 
@@ -89,6 +79,7 @@ export async function createUserData() {
         widgets: initialWidgets,
         encryptData: false,
         mode: "default",
+        newTabPage: "https://tab.gladly.io/newtab/",
         keyboardShortcuts: {},
         mirrorHistoryToBrowser: false,
       },
