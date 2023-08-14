@@ -161,6 +161,15 @@ export default class IframesWidget extends WidgetLayer {
         padding: 0.25em;
       }
 
+      section .frames {
+        flex: 1;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        place-items: stretch;
+      }
+
       ion-segment-button {
         min-width: 2em;
       }
@@ -186,7 +195,8 @@ export default class IframesWidget extends WidgetLayer {
       /* Modes */
       /*///////*/
 
-      section .frames {
+      /* expanding */
+      :host(.expanding) section .frames {
         flex: 1;
 
         display: grid;
@@ -200,12 +210,12 @@ export default class IframesWidget extends WidgetLayer {
           grid-template-rows var(--collapse-animation-duration);
       }
 
-      section:hover .frames {
+      :host(.expanding) section:hover .frames {
         grid-template-rows: 1fr;
         grid-template-columns: 1fr;
       }
 
-      section iframe {
+      :host(.expanding) section iframe {
         min-width: 0;
         min-height: 0;
       }
