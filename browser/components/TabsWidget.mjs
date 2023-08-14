@@ -53,15 +53,17 @@ export default class TabsWidget extends WidgetLayer {
     return html`<ion-segment-button class="tab" value=${index} layout="icon-start">
       <ion-label
         ><ion-avatar> <img src="${url}/favicon.ico" alt="The site icon of ${url}" class="frame-icon" /> </ion-avatar>
-        ${name || url}
+        <span>${name || url}</span>
       </ion-label>
     </ion-segment-button> `;
   }
 
   newTab() {
-    return html`<ion-segment-button value="${0}" layout="icon-start">
-      <ion-label> New Tab Page </ion-label>
-      <ion-icon name="add-circle-outline"></ion-icon>
+    return html`<ion-segment-button class="tab" value="${0}">
+      <ion-label>
+        <ion-icon name="add-circle-outline"></ion-icon>
+        New Tab Page
+      </ion-label>
     </ion-segment-button>`;
   }
 
@@ -82,6 +84,7 @@ export default class TabsWidget extends WidgetLayer {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 0.25em;
+        align-items: center;
         transition: grid-template-columns var(--collapse-animation-duration);
       }
 
