@@ -67,40 +67,16 @@ export default class TabsWidget extends WidgetLayer {
       <ion-content class="ion-padding">
         <h2>Apps</h2>
         <ion-list>
-          ${this.settings?.frames.map(
-            (frame, i) => html`
-              <ion-item>
-                <ion-input
-                  label="App ${i + 1}"
-                  type="url"
-                  ${ref(this.lastFrameInput)}
-                  value=${frame}
-                  @ionInput=${async (e) => {
-                    const frames = [...this.settings.frames];
-                    frames[i] = e.target.value;
-                    this.updateWidgetSetting("frames", frames);
-                    this.requestUpdate();
-                  }}
-                  @ionFocus=${async (e) => {
-                    const frames = [...this.settings.frames];
-                    frames[i] = e.target.value;
-                    this.updateWidgetSetting("frames", frames);
-                    this.requestUpdate();
-                  }}
-                ></ion-input>
-              </ion-item>
-            `
-          )}
           <ion-item>
             <ion-input
               label="Add An App"
               type="url"
               @ionInput=${async () => {
-                this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
+                // this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
                 this.requestUpdate();
               }}
               @ionFocus=${async () => {
-                this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
+                // this.updateWidgetSetting("frames", [...(this.settings?.frames || []), "Test"]);
                 this.requestUpdate();
               }}
             ></ion-input>
