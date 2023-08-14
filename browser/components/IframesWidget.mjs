@@ -168,6 +168,8 @@ export default class IframesWidget extends WidgetLayer {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
         place-items: stretch;
+
+        overflow: hidden;
       }
 
       ion-segment-button {
@@ -196,14 +198,13 @@ export default class IframesWidget extends WidgetLayer {
       /*///////*/
 
       /* expanding */
+      :host(.expanding) section {
+        flex-basis: fit-content;
+      }
+
       :host(.expanding) section .frames {
-        flex: 1;
-
-        display: grid;
         grid-template-columns: 0fr;
-        grid-template-rows: 0fr;
-
-        overflow: hidden;
+        /* grid-template-rows: 0fr; */
 
         transition:
           grid-template-columns var(--collapse-animation-duration),
