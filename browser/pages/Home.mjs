@@ -9,7 +9,7 @@ import "../components/TabsWidget.mjs";
 import WebView from "../components/Webview.mjs";
 import { watchUserSettings } from "../services/daos/UserDAO.mjs";
 
-export default class Home extends LitElement {
+export default class Browser extends LitElement {
   static properties = {
     widgets: { type: Object, state: true },
   };
@@ -63,4 +63,4 @@ export default class Home extends LitElement {
   ];
 }
 
-customElements.define("home-", Home);
+customElements.define("browser-", Browser);

@@ -4,7 +4,7 @@ import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
 
-import Home from "./pages/Home.mjs";
+import Browser from "./pages/Home.mjs";
 import SignUp from "./pages/SignUp.mjs";
 import LogIn from "./pages/LogIn.mjs";
 import ForgotPassword from "./pages/ForgotPassword.mjs";
@@ -35,7 +35,7 @@ export default class App extends LitElement {
   constructor() {
     super();
     // page.base("/browser");
-    this.createRoute("/", Home);
+    this.createRoute("/", Browser);
     this.createRoute("/log-in", LogIn);
     this.createRoute("/sign-up", SignUp);
     this.createRoute("/forgot-password", ForgotPassword);
