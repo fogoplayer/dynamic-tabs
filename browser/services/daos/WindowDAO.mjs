@@ -9,7 +9,7 @@ import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.
 import { collectionRef, docRef, getDocData, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
-import { createTab } from "./TabsDAO.mjs";
+import { createTab, getTab } from "./TabsDAO.mjs";
 
 /**
  * @typedef {{
@@ -61,5 +61,11 @@ export async function updateWindow(windowRef, data) {
  */
 export async function getWindow(ref) {
   // @ts-ignore
-  return /** @type {WindowData} */ (await getDocData(ref));
+  const rawWindowData = /** @type {WindowSchema} */ (await getDocData(ref));
+  // @ts-ignore
+  return /** @type {WindowData} */ (
+    Object.assign(rawWindowData, {
+      tabs: await Promise.all(rawWindowData.tabs.map((ref) => getTab(ref))),
+    })
+  );
 }

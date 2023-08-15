@@ -58,8 +58,9 @@ export async function updateTab(tabRef, data) {
 
 /**
  * @param {DocumentReference} ref
- * @returns {Promise<TabData>}
+ * @returns {Promise<TabSchema>}
  */
 export async function getTab(ref) {
-  return /** @type {TabData} */ (await getDocData(ref));
+  // @ts-ignore
+  return /** @type {TabSchema} */ (await getDocData(ref));
 }

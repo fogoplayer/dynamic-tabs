@@ -10,7 +10,7 @@ import { collectionRef, docRef, getDocData, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { PROFILES_COLLECTION } from "./ProfileDAO.mjs";
-import { createWindow } from "./WindowDAO.mjs";
+import { createWindow, getWindow } from "./WindowDAO.mjs";
 
 export const SESSIONS_COLLECTION = "sessions";
 
@@ -61,5 +61,11 @@ export async function updateSession(sessionRef, data) {
  */
 export async function getSession(ref) {
   // @ts-ignore
-  return /** @type {SessionData} */ (await getDocData(ref));
+  const rawSessionData = /** @type {SessionSchema} */ (await getDocData(ref));
+  // @ts-ignore
+  return /** @type {SessionData} */ (
+    Object.assign(rawSessionData, {
+      tabs: await Promise.all(rawSessionData.windows.map((ref) => getWindow(ref))),
+    })
+  );
 }
