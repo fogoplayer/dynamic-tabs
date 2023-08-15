@@ -7,7 +7,7 @@
  */
 import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
 import { getCurrentUser } from "../auth.mjs";
-import { collectionRef, docRef, push } from "../firestore.mjs";
+import { collectionRef, docRef, getDocData, push } from "../firestore.mjs";
 import { createSession } from "./SessionDAO.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 
@@ -53,4 +53,13 @@ export async function createProfile() {
  */
 export async function updateProfile(profileRef, data) {
   return await updateDoc(profileRef, data);
+}
+
+/**
+ * @param {DocumentReference} ref
+ * @returns {Promise<SessionData>}
+ */
+export async function getProfile(ref) {
+  // @ts-ignore
+  return /** @type {SessionData} */ (await getDocData(ref));
 }

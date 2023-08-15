@@ -6,7 +6,7 @@
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
 import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
-import { collectionRef, docRef, push } from "../firestore.mjs";
+import { collectionRef, docRef, getDocData, push } from "../firestore.mjs";
 import { USER_COLLECTION } from "./UserDAO.mjs";
 import { getCurrentUser } from "../auth.mjs";
 import { PROFILES_COLLECTION } from "./ProfileDAO.mjs";
@@ -53,4 +53,13 @@ export async function createSession(profileRef) {
  */
 export async function updateSession(sessionRef, data) {
   return await updateDoc(sessionRef, data);
+}
+
+/**
+ * @param {DocumentReference} ref
+ * @returns {Promise<SessionData>}
+ */
+export async function getSession(ref) {
+  // @ts-ignore
+  return /** @type {SessionData} */ (await getDocData(ref));
 }

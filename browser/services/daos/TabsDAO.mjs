@@ -4,7 +4,7 @@
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
  */
 import { addDoc, updateDoc } from "../../libs/firebase/9.7.0/firebase-firestore.js";
-import { collectionRef } from "../firestore.mjs";
+import { collectionRef, getDocData } from "../firestore.mjs";
 
 /**
  * @typedef {{
@@ -54,4 +54,12 @@ export async function createTab(windowRef) {
  */
 export async function updateTab(tabRef, data) {
   return await updateDoc(tabRef, data);
+}
+
+/**
+ * @param {DocumentReference} ref
+ * @returns {Promise<TabData>}
+ */
+export async function getTab(ref) {
+  return /** @type {TabData} */ (await getDocData(ref));
 }
