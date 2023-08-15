@@ -1,6 +1,7 @@
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").DocumentReference} DocumentReference */
 /** @typedef {import("../../libs/firebase/9.7.0/firebase-auth.js").User} User */
-/** @typedef {import("./WidgetDAO.mjs").WidgetSettingSchema} WidgetSettingSchema */
+/** @typedef {import("./WidgetDAO.mjs").WidgetSettingsData} WidgetSettingsData */
+/** @typedef {import("./ProfileDAO.mjs").ProfileData} ProfileData */
 /**
  * @template T
  * @typedef {import("../../libs/firebase/9.7.0/firebase-firestore.js").WithFieldValue<T>} WithFieldValue<T>
@@ -15,7 +16,7 @@ import {
   updateDoc,
   watchDocData,
 } from "../firestore.mjs";
-import { createProfile } from "./ProfileDAO.mjs";
+import { createProfile, getProfile } from "./ProfileDAO.mjs";
 import { createWidget } from "./WidgetDAO.mjs";
 
 export const USER_COLLECTION = collectionRef("users");
@@ -26,6 +27,13 @@ export const USER_COLLECTION = collectionRef("users");
  *  profiles: DocumentReference[];
  *  autocompleteHistory: DocumentReference[];
  * }} UserSchema
+ */
+
+/**
+ * @typedef {Omit<UserSchema, "settings" | "profiles"> & {
+ *  settings: UserSettingsData;
+ *  profiles: ProfileData[];
+ * }} UserData
  */
 
 /**
@@ -48,7 +56,7 @@ export const USER_COLLECTION = collectionRef("users");
 
 /**
  * @typedef {Omit<UserSettingsSchema, "widgets"> & {
- *  widgets: WidgetSettingSchema[];
+ *  widgets: WidgetSettingsData[];
  * }} UserSettingsData
  */
 
@@ -101,18 +109,38 @@ export async function updateUserSetting(settingsDict) {
 /**
  *
  * @param {(data: UserSettingsData) => void} callback
+ * @returns {Promise<UserSettingsData>}
  */
 export async function watchUserSettings(callback) {
+  return await new Promise((res,rej)=>{
+    authStateChanged((userData) => {
+      const { uid } = /** @type {User} */ (getCurrentUser());
+      watchDocData(docRef(USER_COLLECTION, uid), async (/** @type {UserSchema} */ userData) => {
+        // @ts-ignore
+        const userSettings = /** @type {UserSettingsData} */ (
+          Object.assign(userData.settings, {
+            widgets: await Promise.all(userData.settings.widgets.map(async (widgetRef) => await getDocData(widgetRef))),
+          })
+        );
+        res(userSettings)
+        callback(userSettings);
+      });
+    });
+  })
+}
+
+/**
+ *
+ * @param {(data: UserData) => void} callback
+ */
+export async function watchUserData(callback) {
   authStateChanged((userData) => {
     const { uid } = /** @type {User} */ (getCurrentUser());
     watchDocData(docRef(USER_COLLECTION, uid), async (/** @type {UserSchema} */ userData) => {
       // @ts-ignore
-      const userSettings = /** @type {UserSettingsData} */ (
-        Object.assign(userData.settings, {
-          widgets: await Promise.all(userData.settings.widgets.map(async (widgetRef) => await getDocData(widgetRef))),
-        })
-      );
-      callback(userSettings);
+      const newUserData = /** @type {UserData} */ (userData)
+      newUserData.settings = await watchUserSettings(()=>{})
+      newUserData.profiles = await Promise.all(userData.profiles.map(async (profileRef) => await getProfile(profileRef))),
     });
   });
 }
