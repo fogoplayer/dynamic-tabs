@@ -4,7 +4,7 @@ import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js";
 import "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js";
 import globalCss from "./global-styles/global.css.mjs";
 
-import Browser from "./pages/Home.mjs";
+import Browser from "./pages/Browser.mjs";
 import SignUp from "./pages/SignUp.mjs";
 import LogIn from "./pages/LogIn.mjs";
 import ForgotPassword from "./pages/ForgotPassword.mjs";
