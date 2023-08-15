@@ -24,6 +24,12 @@ export const PROFILES_COLLECTION = "profiles";
  */
 
 /**
+ * @typedef {WidgetSettingSchema & {
+ *  ref: DocumentReference;
+ * }} WidgetSettingsData
+ */
+
+/**
  *
  * @param {Partial<WidgetSettingSchema>} settings
  */
