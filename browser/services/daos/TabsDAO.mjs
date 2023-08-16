@@ -10,6 +10,7 @@ import { collectionRef, getDocData } from "../firestore.mjs";
  * @typedef {{
  *  name: string;
  *  icon: string;
+ *  pinned: boolean;
  *  history: DocumentReference[]
  * }} TabSchema
  */
@@ -40,6 +41,7 @@ export async function createTab(windowRef) {
     ({
       name: "",
       icon: "",
+      pinned: false,
       history: [],
     })
   );
