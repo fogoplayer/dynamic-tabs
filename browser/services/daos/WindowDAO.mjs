@@ -22,6 +22,7 @@ import { createTab, getTab } from "./TabsDAO.mjs";
 /**
  * @typedef {Omit<WindowSchema, "tabs"> & {
  *  tabs: TabData[]
+ *  ref: DocumentReference;
  * }} WindowData
  */
 

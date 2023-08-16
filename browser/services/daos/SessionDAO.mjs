@@ -25,6 +25,7 @@ export const SESSIONS_COLLECTION = "sessions";
 /**
  * @typedef {Omit<SessionSchema, "windows"> & {
  *  windows: WindowData[]
+ *  ref: DocumentReference;
  * }} SessionData
  */
 

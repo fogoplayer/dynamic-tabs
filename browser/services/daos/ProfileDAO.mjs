@@ -23,7 +23,8 @@ export const PROFILES_COLLECTION = "profiles";
 
 /**
  * @typedef {Omit<ProfileSchema, "windows"> & {
- *  sessions: SessionData[]
+ *  sessions: SessionData[];
+ *  ref: DocumentReference;
  * }} ProfileData
  */
 
