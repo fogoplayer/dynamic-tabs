@@ -65,7 +65,7 @@ export async function getProfile(ref) {
   // @ts-ignore
   return /** @type {ProfileData} */ (
     Object.assign(rawProfileData, {
-      tabs: await Promise.all(rawProfileData.sessions.map((ref) => getSession(ref))),
+      sessions: await Promise.all(rawProfileData.sessions.map((ref) => getSession(ref))),
     })
   );
 }

@@ -65,7 +65,7 @@ export async function getSession(ref) {
   // @ts-ignore
   return /** @type {SessionData} */ (
     Object.assign(rawSessionData, {
-      tabs: await Promise.all(rawSessionData.windows.map((ref) => getWindow(ref))),
+      windows: await Promise.all(rawSessionData.windows.map((ref) => getWindow(ref))),
     })
   );
 }
