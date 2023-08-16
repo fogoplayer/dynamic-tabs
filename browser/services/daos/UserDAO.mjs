@@ -112,7 +112,7 @@ export async function updateUserSetting(settingsDict) {
  * @returns {Promise<UserSettingsData>}
  */
 export async function watchUserSettings(callback) {
-  return await new Promise((res,rej)=>{
+  return await new Promise((res, rej) => {
     authStateChanged((userData) => {
       const { uid } = /** @type {User} */ (getCurrentUser());
       watchDocData(docRef(USER_COLLECTION, uid), async (/** @type {UserSchema} */ userData) => {
@@ -122,11 +122,11 @@ export async function watchUserSettings(callback) {
             widgets: await Promise.all(userData.settings.widgets.map(async (widgetRef) => await getDocData(widgetRef))),
           })
         );
-        res(userSettings)
+        res(userSettings);
         callback(userSettings);
       });
     });
-  })
+  });
 }
 
 /**
@@ -138,9 +138,12 @@ export async function watchUserData(callback) {
     const { uid } = /** @type {User} */ (getCurrentUser());
     watchDocData(docRef(USER_COLLECTION, uid), async (/** @type {UserSchema} */ userData) => {
       // @ts-ignore
-      const newUserData = /** @type {UserData} */ (userData)
-      newUserData.settings = await watchUserSettings(()=>{})
-      newUserData.profiles = await Promise.all(userData.profiles.map(async (profileRef) => await getProfile(profileRef))),
+      const newUserData = /** @type {UserData} */ (userData);
+      newUserData.settings = await watchUserSettings(() => {});
+      newUserData.profiles = await Promise.all(
+        userData.profiles.map(async (profileRef) => await getProfile(profileRef))
+      );
+      callback(newUserData);
     });
   });
 }
