@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "dynamic-tabs-d1d52",
+    "prod": "%project-name%"
+  }
+}
